@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS post (
     theme ENUM("Ocio", "Videojuegos", "Eventos", "Vida diaria", "Familias", "Viajes") NOT NULL,
     publicationDate DATE NOT NULL,
     idUser INT NOT NULL,
+    numViews INT NOT NULL,
 
     FOREIGN KEY (idUser) REFERENCES person(id) ON DELETE CASCADE ON UPDATE CASCADE 
 );
@@ -35,3 +36,12 @@ CREATE TABLE IF NOT EXISTS coment (
     FOREIGN KEY (idUser) REFERENCES person(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (idPost) REFERENCES post(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS likes (
+    idUser INT NOT NULL,
+    idPost INT NOT NULL,
+
+    PRIMARY KEY (idUser, idPost),
+    FOREIGN KEY (idUser) REFERENCES person(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (idPost) REFERENCES post(id) ON DELETE CASCADE ON UPDATE CASCADE
+)

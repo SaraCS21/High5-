@@ -68,13 +68,18 @@
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
                 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
                     <div class="form-floating mb-4">
-                        <input type="email" name="email" id="floatingEmail" class="form-control form-control-lg" placeholder="Enter a valid email address" maxlength="50"/>
+                        <input type="email" name="email" id="floatingEmail" class="form-control form-control-lg" maxlength="50"/>
                         <label class="form-label" for="floatingEmail">Correo electrónico</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="password" name="password" id="floatingPassword" class="form-control form-control-lg" placeholder="Enter password" maxlength="70"/>
-                        <label class="form-label" for="floatingPassword">Contraseña</label>
+                        <input type="password" name="password" id="inputShowPassword" class="form-control form-control-lg rounded-start position-relative" maxlength="70"/>
+                        
+                        <button id="showPassword" type="button" class="bg-white border-0 position-absolute fs-4 text-secondary" style="top:18%; left:92%">
+                            <i class='bx bx-show-alt'></i>
+                        </button>
+
+                        <label class="form-label" for="inputShowPassword">Contraseña</label>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center">

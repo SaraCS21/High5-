@@ -1,5 +1,6 @@
 <?php
     $errors = require "./config/errors.php";
+    $errors = require "./controllers/likes.php";
 
     // En caso de no tener una sesión iniciada...
     if ($_SESSION["idUser"] === 0){
@@ -12,6 +13,10 @@
 
     $id = isset($_REQUEST["button"]) ? $_REQUEST["button"] : $_REQUEST["idPost"];
     $post = selectPost($id);
+
+    incrementViews($id);
+
+    $likes = (getLikesPost($id) !== []) ? getLikesPost($id)[0] : getLikesPost($id);
 
     // En caso de que queramos enviar un comentario...
     if(isset($_REQUEST["send"])){
@@ -29,7 +34,7 @@
         deletePost();
         Header("Location: ./index.php?url=landing");
 
-    }  else if (isset($_REQUEST["edit"])){
+    } else if (isset($_REQUEST["edit"])){
         // Validamos los datos...
         if (!empty($_REQUEST["content"]) && !empty($_REQUEST["title"]) && !empty($_REQUEST["theme"])){
             // Editamos el post
@@ -39,7 +44,7 @@
             $continueEdit = false;
         }
 
-    }  else if (isset($_REQUEST["editComent"])){
+    } else if (isset($_REQUEST["editComent"])){
         // Validamos los datos...
         if (!empty($_REQUEST["content"])){
             // Editamos el comentario
@@ -48,11 +53,19 @@
             $continueEditComent = false;
         }
 
-    }  else if (isset($_REQUEST["deleteComent"])){
+    } else if (isset($_REQUEST["deleteComent"])){
         // Eliminamos el comentario
         deleteComent();
 
-    }  
+    } else if (isset($_REQUEST["like"])){
+        setLike();
+        Header("Location: ./index.php?url=post&idPost=$id");
+
+    } else if (isset($_REQUEST["dislike"])){
+        deleteLike();
+        Header("Location: ./index.php?url=post&idPost=$id");
+
+    }
 ?>
 
 <section class="p-4 mt-5" id="services">
@@ -183,6 +196,21 @@
                                             </div>
                                         </div>
                                         <?php } ?>
+
+                                        <?php if (in_array($_SESSION["idUser"], $likes)){ ?>
+
+                                        <button type="submit" name="dislike" class="border-0 bg-white">
+                                            <i class='bx bxs-like text-primary fs-4'></i>
+                                        </button>
+
+                                        <?php } else { ?>
+
+                                        <button type="submit" name="like" class="border-0 bg-white">
+                                            <i class='bx bx-like text-primary fs-4'></i>
+                                        </button>
+
+                                        <?php } ?>
+
                                     </div>
                                 </div>
 

@@ -91,13 +91,28 @@
 
                 // En caso de estar en un formulario de registro o de actualización de datos...
                 if ($typeForm === "register" || $typeForm === "update" ){
-                    $result = (validateEmail($_REQUEST["email"]) === "") ? "" : validateEmail($_REQUEST["email"]);
-                    $result = (validatePassword($_REQUEST["password"], $_REQUEST["confirmPassword"]) === "") ? "" : validatePassword($_REQUEST["password"], $_REQUEST["confirmPassword"]);
+
+                    if ($typeForm === "register" && in_array($_REQUEST["email"], allEmailPerson()[0])){
+                        $result = $errors["errors"]["emailExists"];
+
+                    } else if (validateEmail($_REQUEST["email"]) !== ""){
+                        $result = validateEmail($_REQUEST["email"]);
+
+                    } else if (validatePassword($_REQUEST["password"], $_REQUEST["confirmPassword"]) !== ""){
+                        $result = validatePassword($_REQUEST["password"], $_REQUEST["confirmPassword"]);
+
+                    } 
 
                 // En caso de estar en un formulario de login...
                 } else if ($typeForm === "login"){
-                    $result = (validateEmail($_REQUEST["email"]) === "") ? "" : validateEmail($_REQUEST["email"]);
-                    $result = (selectBlockPerson() === "block") ? $errors["errors"]["blockUser"] : "";
+
+                    if (validateEmail($_REQUEST["email"]) !== ""){
+                        $result = validateEmail($_REQUEST["email"]);
+
+                    } else if (selectBlockPerson() === "block") {
+                        $errors["errors"]["blockUser"];
+
+                    }
 
                 // En caso de estar en un formulario de creación de nuevos temas o envío de datos...
                 } else if ($typeForm === "createTheme" || $typeForm === "send" ){

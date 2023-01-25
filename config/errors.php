@@ -12,7 +12,8 @@
             "incorrectPassword" => "Contraseña incorrecta",
             "comentEmpty" => "No se ha podido editar el comentario",
             "postEmpty" => "No se ha podido editar el post",
-            "blockUser" => "Su cuenta ha sido bloqueada"
+            "blockUser" => "Su cuenta ha sido bloqueada",
+            "emailExists" => "El correo ya existe"
         ]
     ];
 

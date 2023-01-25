@@ -86,13 +86,23 @@
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="password" name="password" id="floatingPassword" class="form-control form-control-lg" maxlength="16"/>
-                        <label class="form-label" for="floatingPassword">Contraseña</label>
+                        <input type="password" name="password" id="inputShowPassword" class="form-control form-control-lg" maxlength="16"/>
+
+                        <button id="showPassword" type="button" class="bg-white border-0 position-absolute fs-4 text-secondary" style="top:18%; left:92%">
+                            <i class='bx bx-show-alt'></i>
+                        </button>
+
+                        <label class="form-label" for="inputShowPassword">Contraseña</label>
                     </div>
 
                     <div class="form-floating mb-3">
-                        <input type="password" name="confirmPassword" id="floatingConfirmPassword" class="form-control form-control-lg" maxlength="16"/>
-                        <label class="form-label" for="floatingConfirmPassword">Repite la Contraseña</label>
+                        <input type="password" name="confirmPassword" id="inputShowConfirmPassword" class="form-control form-control-lg" maxlength="16"/>
+
+                        <button id="showConfirmPassword" type="button" class="bg-white border-0 position-absolute fs-4 text-secondary" style="top:18%; left:92%">
+                            <i class='bx bx-show-alt'></i>
+                        </button>
+
+                        <label class="form-label" for="inputShowConfirmPassword">Repite la Contraseña</label>
                     </div>
 
                     <div class="form-floating mb-3">

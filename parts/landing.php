@@ -1,11 +1,11 @@
 <?php
+    require "./controllers/coment.php";
+    require "./controllers/likes.php";
 
     // En caso de no tener una sesión iniciada...
     if ($_SESSION["idUser"] === 0){
         Header("Location: ./index.php?url=login");
     }
-
-    echo $_SESSION["idUser"];
 
     try {
         $connection = connect();
@@ -57,7 +57,7 @@
                     </form>
                 </div>
                 
-                <hr><br>
+                <hr>
 
                 <!-- Mostramos todos los posts de nuestra Base de Datos -->
                 <?php 
@@ -65,7 +65,7 @@
                         foreach($posts as $row) {
                 ?>
 
-                    <div class="d-flex flex-column pb-4 border-bottom border-1">
+                    <div class="d-flex flex-column pb-4 border-bottom border-1 mt-3">
                         <div class="d-flex justify-content-between">
                             <div>
                                 <h5><?= $row["title"] ?></h5>
@@ -73,9 +73,23 @@
                             </div>
                             
                             <div class="fs-4">
-                                <i class='bx bx-show me-2'></i>
-                                <i class='bx bx-like me-2'></i>
-                                <i class='bx bx-chat'></i>
+                                <i class='bx bx-show me-2 position-relative'>
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.8rem; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+                                        <?= getViews($row["id"]) ?>
+                                    </span>
+                                </i>
+
+                                <i class='bx bx-like me-2 position-relative'>
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.8rem; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+                                        <?= countLikesPost($row["id"]) ?>
+                                    </span>
+                                </i>
+
+                                <i class='bx bx-chat position-relative'>
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.8rem; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+                                        <?= contComents($row["id"]) ?>
+                                    </span>
+                                </i>
                             </div>
                         </div>
                         

@@ -120,4 +120,22 @@
         }
     }
 
+    function contComents($idPost){
+        try {
+            $connection = connect();
+
+            $querySQL = "SELECT * FROM coment WHERE idPost = $idPost";
+            $sentence = $connection->prepare($querySQL);
+            $sentence->execute();
+
+            $coment = $sentence->fetchAll();
+            $continue = ($coment && $sentence->rowCount()>0) ? true : false;
+
+            return $sentence->rowCount();
+
+        } catch(PDOException $error) {
+            $error = $error->getMessage();
+        }
+    }
+
 ?>

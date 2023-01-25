@@ -296,6 +296,25 @@
         }
     }
 
+    function allEmailPerson(){
+        try {
+            $connection = connect();
+
+            $emailQuerySQL = "SELECT email FROM person";
+
+            $sentenceEmail = $connection->prepare($emailQuerySQL);
+            $sentenceEmail->execute();
+    
+            $email = $sentenceEmail->fetchAll();
+
+            return $email;
+
+        } catch(PDOException $error) {
+            $result["error"] = true;
+            $result["mensaje"] = $error->getMessage();
+        }
+    }
+
     /**
         * Selección de una persona
         *

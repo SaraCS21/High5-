@@ -28,10 +28,11 @@
                     "title" => "Seguimiento reservas",
                     "theme" => "Videojuegos",
                     "publicationDate" => date('Y-m-d'), // Fecha actual
-                    "idUser" => 1
+                    "idUser" => 1,
+                    "numViews" => 0
                 ];
 
-                $insertSQL = "INSERT INTO post (content, title, theme, publicationDate, idUser)";
+                $insertSQL = "INSERT INTO post (content, title, theme, publicationDate, idUser, numViews)";
                 $insertSQL .= "VALUES (:" . implode(", :", array_keys($post)) . ")";
 
                 $sentenceInsert = $connection->prepare($insertSQL);
@@ -65,10 +66,11 @@
                 "title" => $_REQUEST["title"],
                 "theme" => $_REQUEST["theme"],
                 "publicationDate" => date('Y-m-d'), // Fecha actual
-                "idUser" => $_SESSION["idUser"] // Usuario con sesión activa
+                "idUser" => $_SESSION["idUser"], // Usuario con sesión activa
+                "numViews" => 0 // Número de vistas al principio
             ];
 
-            $querySQL = "INSERT INTO post (content, title, theme, publicationDate, idUser)";
+            $querySQL = "INSERT INTO post (content, title, theme, publicationDate, idUser, numViews)";
             $querySQL .= "VALUES (:" . implode(", :", array_keys($post)) . ")";
 
             $sentence = $connection->prepare($querySQL);
@@ -174,4 +176,45 @@
         }
     }
 
+    function getViews($idPost){
+        try {
+            $connection = connect();
+
+            $sql = "SELECT numViews FROM post WHERE id = :idPost";
+
+            $querySQL = $connection->prepare($sql);
+            $querySQL->bindParam(':idPost', $idPost, PDO::PARAM_INT);
+
+            $querySQL->execute();
+
+            $views = $querySQL->fetchAll();
+            $continue = ($views && $querySQL->rowCount()>0) ? true : false;
+
+            return $views[0][0];
+
+        } catch(PDOException $error) {
+            $result["error"] = true;
+            $result["mensaje"] = $error->getMessage();
+        }
+    }
+
+    function incrementViews($idPost){
+        try {
+            $connection = connect();
+
+            $querySQL = $connection->prepare
+            ("UPDATE post SET numViews = :numViews  WHERE id = :idPost");
+
+            $querySQL->bindValue(':idPost', $idPost, PDO::PARAM_INT);
+
+            $numViews = getViews($idPost) + 1;
+            $querySQL->bindValue(':numViews', $numViews, PDO::PARAM_INT);
+
+            $querySQL->execute();
+
+        } catch(PDOException $error) {
+            $result["error"] = true;
+            $result["mensaje"] = $error->getMessage();
+        }
+    }
 ?>
