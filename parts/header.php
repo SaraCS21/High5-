@@ -5,6 +5,7 @@
     */
 
     session_start(); // Iniciamos la sesión
+    
     require "./config/functions.php";
     require "./config/create.php";
     require "./controllers/person.php";

@@ -1,74 +1,53 @@
 <?php
     $typeUser = selectTypePerson();
 
+    // En caso de que el usuario no sea un administrador...
     if (selectTypePerson() !== "admin"){
         Header("Location: ./index.php?url=landing");
     }
 
-    $continuePost = false;
-    $continueUser = false;
+    $posts = false;
+    $users = false;
     $continueUpdatePost = false;
 
     // En caso de que queramos ver la información de los posts...
     if (isset($_REQUEST["postInfo"])){
-        try {
-            $connection = connect();
+        $posts = selectAllPost();
 
-            $querySQL = "SELECT * FROM post";
-            $sentence = $connection->prepare($querySQL);
-            $sentence->execute();
-    
-            $posts = $sentence->fetchAll();
-            $continuePost = ($posts && $sentence->rowCount()>0) ? true : false;
-
-            // Todas las claves para los th de la tabla
-            $keys = ["Id", "Contenido", "Título", "Tema", "Publicación", "Id Usuario"];
-    
-        } catch(PDOException $error) {
-            $error = $error->getMessage();
-        }
+        // Todas las claves para los th de la tabla
+        $keys = ["Id", "Contenido", "Título", "Tema", "Publicación", "Id Usuario"];
     }
     
     // En caso de que queramos ver la información de los usuarios...
     if (isset($_REQUEST["userInfo"])){
-        try {
-            $connection = connect();
+        $users = selectAllPerson();
 
-            $querySQL = "SELECT * FROM person";
-            $sentence = $connection->prepare($querySQL);
-            $sentence->execute();
-    
-            $users = $sentence->fetchAll();
-            $continueUser = ($users && $sentence->rowCount()>0) ? true : false;
-
-            // Todas las claves para los th de la tabla
-            $keys = ["Id", "Nombre", "Apellido", "Correo", "Edad", "Tipo", "Bloqueado"];
-    
-        } catch(PDOException $error) {
-            $error = $error->getMessage();
-        }
+        // Todas las claves para los th de la tabla
+        $keys = ["Id", "Nombre", "Apellido", "Correo", "Edad", "Tipo", "Bloqueado"];
     }
 
+    // En caso de querer eliminar un post...
     if (isset($_REQUEST["deletePost"])){
-        // Eliminamos el post
         deletePost();
 
+    // En caso de querer eliminar un usuario...
     } else if (isset($_REQUEST["deleteUser"])){
-        // Eliminamos al usuario
         deletePerson();
 
+    // En caso de querer editar un post...
     } else if (isset($_REQUEST["editPost"])){
         $idPost = $_REQUEST["editPost"];
         // Nos movemos a la página de edición del post
         Header("Location: ./index.php?url=updatePost&idPost=$idPost");
 
+    // En caso de querer editar un usuario...
     } else if (isset($_REQUEST["editUser"])){
         $idUser = $_REQUEST["editUser"];
         // Nos movemos a la página de edición del usuario
         Header("Location: ./index.php?url=updatePerson&idUser=$idUser");
-
     } 
     
+    // Si venimos de actualizar a un usuario...
     if (isset($_REQUEST["updatePerson"])){
 
         // Validamos los datos...
@@ -78,6 +57,7 @@
             Header("Location: ./index.php?url=adminPanel");
         }     
 
+    // Si venimos de actualizar un post...
     } else if (isset($_REQUEST["updatePost"])){
         // Validamos los datos...
         if (!empty($_REQUEST["content"]) && !empty($_REQUEST["title"]) && !empty($_REQUEST["theme"])){
@@ -108,7 +88,7 @@
 </nav>
 
 <!-- En caso de querer ver los datos de los posts... -->
-<?php if ($continuePost){ ?>
+<?php if ($posts){ ?>
     <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
         <div class="w-100 d-flex flex-wrap justify-content-center mt-5">
             <h2 class="w-100 text-center mb-5">Tabla de Posts</h2>
@@ -175,7 +155,7 @@
     </form>
                     
 <!-- En caso de querer ver los datos de los usuarios... -->
-<?php } else if ($continueUser){ ?>
+<?php } else if ($users){ ?>
     <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
         <div class="w-100 d-flex flex-wrap justify-content-center mt-5">
             <h2 class="w-100 text-center mb-5">Tabla de Usuarios</h2>

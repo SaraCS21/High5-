@@ -14,9 +14,18 @@
     $id = isset($_REQUEST["button"]) ? $_REQUEST["button"] : $_REQUEST["idPost"];
     $post = selectPost($id);
 
+    // Incrementamos las visitas del post cada vez que entramos en este
     incrementViews($id);
 
-    $likes = (getLikesPost($id) !== []) ? getLikesPost($id)[0] : getLikesPost($id);
+    // Obtenemos todos los likes que tiene el post en el que nos encontremos
+    $likes = (getLikesPost($id) !== []) ? getLikesPost($id) : [];
+    $arrayLikes = [];
+
+    foreach ($likes as $like) {
+        foreach ($like as $key => $value) {
+            array_push($arrayLikes, $value);
+        }
+    }
 
     // En caso de que queramos enviar un comentario...
     if(isset($_REQUEST["send"])){
@@ -29,42 +38,45 @@
             createComent();
         } 
 
+    // En caso de que queramos eliminar un post...
     } else if (isset($_REQUEST["delete"])){
-        // Eliminamos el post
         deletePost();
         Header("Location: ./index.php?url=landing");
+
 
     } else if (isset($_REQUEST["edit"])){
         // Validamos los datos...
         if (!empty($_REQUEST["content"]) && !empty($_REQUEST["title"]) && !empty($_REQUEST["theme"])){
-            // Editamos el post
             updatePost();
             Header("Location: ./index.php?url=landing");
+
         } else {
             $continueEdit = false;
         }
 
+    // En caso de que queramos editar un comentario...
     } else if (isset($_REQUEST["editComent"])){
         // Validamos los datos...
         if (!empty($_REQUEST["content"])){
-            // Editamos el comentario
             updateComent();
+
         } else {
             $continueEditComent = false;
         }
 
+    // En caso de que queramos eliminar un comentario...
     } else if (isset($_REQUEST["deleteComent"])){
-        // Eliminamos el comentario
         deleteComent();
 
+    // En caso de que queramos dar like a un post...
     } else if (isset($_REQUEST["like"])){
         setLike();
         Header("Location: ./index.php?url=post&idPost=$id");
 
+    // En caso de que queramos dar dislike a un post...
     } else if (isset($_REQUEST["dislike"])){
         deleteLike();
         Header("Location: ./index.php?url=post&idPost=$id");
-
     }
 ?>
 
@@ -197,7 +209,7 @@
                                         </div>
                                         <?php } ?>
 
-                                        <?php if (in_array($_SESSION["idUser"], $likes)){ ?>
+                                        <?php if (in_array($_SESSION["idUser"], $arrayLikes)){ ?>
 
                                         <button type="submit" name="dislike" class="border-0 bg-white">
                                             <i class='bx bxs-like text-primary fs-4'></i>

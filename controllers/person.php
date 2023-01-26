@@ -23,26 +23,23 @@
             $create = ($sentenceQuery->rowCount() >= 1) ? false : true;
     
             if ($create){
-                $user = [
-                    "name" => "Admin",
-                    "surname" => "Admin",
-                    "email" => "admin@high5.com",
-                    "password" => hashPassword("Daw1234!"), 
-                    "age" => "25",
-                    "type" => "admin",
-                    "block" => "unblock"
-                ];
-        
-                $insertSQL = "INSERT INTO person (name, surname, email, password, age, type, block)";
-                $insertSQL .= "VALUES (:" . implode(", :", array_keys($user)) . ")";
-
-                $sentenceInsert = $connection->prepare($insertSQL);
-                $sentenceInsert->execute($user);
+                $querySQL = $connection->prepare
+                ("INSERT INTO person (name, surname, email, password, age, type, block) VALUES
+                (:name, :surname, :email, :password, :age, :type, :block)");
+    
+                $querySQL->bindValue(':name', "Admin", PDO::PARAM_STR);
+                $querySQL->bindValue(':surname', "Admin", PDO::PARAM_STR);
+                $querySQL->bindValue(':email', "admin@high5.com", PDO::PARAM_STR);
+                $querySQL->bindValue(':password', hashPassword("Daw1234!"), PDO::PARAM_STR);
+                $querySQL->bindValue(':age', 25, PDO::PARAM_INT);
+                $querySQL->bindValue(':type', "admin", PDO::PARAM_STR);
+                $querySQL->bindValue(':block', "unblock", PDO::PARAM_STR);
+    
+                $querySQL->execute();
             }
     
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
@@ -60,25 +57,22 @@
         try {
             $connection = connect();
 
-            $user = [
-                "name" => $_REQUEST["name"],
-                "surname" => $_REQUEST["surname"],
-                "email" => $_REQUEST["email"],
-                "password" => hashPassword($_REQUEST["password"]),
-                "age" => $_REQUEST["age"],
-                "type" => "user",
-                "block" => "unblock"
-            ];
+            $querySQL = $connection->prepare
+            ("INSERT INTO person (name, surname, email, password, age, type, block) VALUES
+            (:name, :surname, :email, :password, :age, :type, :block)");
 
-            $querySQL = "INSERT INTO person (name, surname, email, password, age, type, block)";
-            $querySQL .= "VALUES (:" . implode(", :", array_keys($user)) . ")";
+            $querySQL->bindValue(':name', $_REQUEST["name"], PDO::PARAM_STR);
+            $querySQL->bindValue(':surname', $_REQUEST["surname"], PDO::PARAM_STR);
+            $querySQL->bindValue(':email', $_REQUEST["email"], PDO::PARAM_STR);
+            $querySQL->bindValue(':password', hashPassword($_REQUEST["password"]), PDO::PARAM_STR);
+            $querySQL->bindValue(':age', $_REQUEST["age"], PDO::PARAM_INT);
+            $querySQL->bindValue(':type', "user", PDO::PARAM_STR);
+            $querySQL->bindValue(':block', "unblock", PDO::PARAM_STR);
 
-            $sentence = $connection->prepare($querySQL);
-            $sentence->execute($user);
+            $querySQL->execute();
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
@@ -88,13 +82,15 @@
         * Esta función se conecta a la Base de Datos para buscar 
         * la contraseña de una persona, a través de su email, y así
         * comprobar que la contraseña que le estamos pasando por
-        * el formulario de login es correcta
+        * el formulario de login es correcta. Además también comprobamos
+        * que exista ese email en la base de datos.
         *
         * @param por $_POST -> algunos valores de la persona [email, password]
         *
         * @global $_REQUEST
         *
-        * @return boolean -> true en caso de que ambas contraseñas sean iguales
+        * @return string $result -> vacío en caso de que todo esté correcto, 
+        * un mensaje de error en caso de que algo falle
     */
     function comprobePerson(){
         $errors = require "./config/errors.php";
@@ -102,17 +98,17 @@
         try {
             $connection = connect();
 
-            $email = $_REQUEST['email'];
-            $querySQL = "SELECT password FROM person WHERE email = '$email'";
+            $sql = "SELECT password FROM person WHERE email = :email";
 
-            $sentence = $connection->prepare($querySQL);
-            $sentence->execute();
+            $querySQL = $connection->prepare($sql);
+            $querySQL->bindValue(':email', $_REQUEST['email'], PDO::PARAM_STR);
+            $querySQL->execute();
 
-            $values = $sentence->fetchAll();
-    
+            $values = $querySQL->fetchAll();
+
             $result = "";
             // En caso de que obtengamos algún valor acorde...
-            $exist = ($sentence->rowCount() !== 1) ? false : true; 
+            $exist = ($querySQL->rowCount() !== 1) ? false : true; 
 
             if ($exist){
                 // Verificamos la contraseña
@@ -123,8 +119,7 @@
             return $result;
 
         } catch(PDOException $error) {
-            $message["error"] = true;
-            $message["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
@@ -166,8 +161,7 @@
             $querySQL->execute();
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
@@ -196,8 +190,7 @@
             $querySQL->execute();
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
@@ -210,6 +203,9 @@
         * @param por $_SESSION -> id del usuario actual [idUser]
         *
         * @global $_SESSION
+        *
+        * @return $type -> false en caso de que el usuario no exista, 
+        * una string con el tipo en caso de que el usuario si exista
     */
     function selectTypePerson(){
         try {
@@ -232,12 +228,11 @@
             return $type;
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
-        /**
+    /**
         * Selección del bloqueo de una persona
         *
         * Esta función se conecta a la Base de Datos para buscar 
@@ -246,6 +241,9 @@
         * @param string $email -> email del usuario actual
         *
         * @global $_REQUEST
+        *
+        * @return $block -> false en caso de que el usuario no exista, 
+        * una string con el bloqueo en caso de que el usuario si exista
     */
     function selectBlockPerson(){
         try {
@@ -265,8 +263,7 @@
             return $block;
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
@@ -277,25 +274,36 @@
         * a una persona por su "idUser" y devolver su nombre
         *
         * @param int @idUser -> clave de la persona 
+        *
+        * @return array $name -> array con el nombre del usuario
     */
     function selectNamePerson($idUser){
         try {
             $connection = connect();
 
-            $nameQuerySQL = "SELECT name FROM person WHERE id = $idUser";
-            $sentenceName = $connection->prepare($nameQuerySQL);
-            $sentenceName->execute();
-    
-            $name = $sentenceName->fetchAll();
+            $sql = "SELECT name FROM person WHERE id = :idUser";
+
+            $querySQL = $connection->prepare($sql);
+            $querySQL->bindValue(':idUser', $idUser, PDO::PARAM_INT);
+
+            $querySQL->execute();
+            $name = $querySQL->fetchAll();
 
             return $name;
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
+    /**
+        * Obtención de todos los emails registrados
+        *
+        * Esta función se conecta a la Base de Datos para buscar 
+        * a todos los email y devolverlos
+        *
+        * @return array $email -> array todos los emails
+    */
     function allEmailPerson(){
         try {
             $connection = connect();
@@ -310,8 +318,7 @@
             return $email;
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
@@ -322,6 +329,9 @@
         * a un usuario por su "id" y devolver sus datos
         *
         * @param int @idUser -> clave de la persona que queramos buscar
+        *
+        * @return -> false en caso de que el usuario no exista, 
+        * un array de los valores del usuario en caso de que exista
     */
     function selectPerson($idUser){
         try {
@@ -340,9 +350,65 @@
             return ($continue) ? $userValues : false;
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
+    /**
+        * Selección de todas las personas
+        *
+        * Esta función se conecta a la Base de Datos para buscar 
+        * a todas las personas y devolverlos
+        *
+        * @return array $users -> array de los valores de todos los usuarios
+    */
+    function selectAllPerson(){
+        try {
+            $connection = connect();
+
+            $querySQL = "SELECT * FROM person";
+            $sentence = $connection->prepare($querySQL);
+            $sentence->execute();
+    
+            $users = $sentence->fetchAll();
+            $continueUser = ($users && $sentence->rowCount()>0) ? true : false;
+
+            return $users;
+
+        } catch(PDOException $error) {
+            $error = $error->getMessage();
+        }
+    }
+
+    /**
+        * Selección del id de una persona
+        *
+        * Esta función se conecta a la Base de Datos para buscar 
+        * a una persona por su "email" y devolver su id
+        *
+        * @param por $_REQUEST -> email del usuario [email]
+        *
+        * @global $_REQUEST
+        *
+        * @return array $name -> array con el nombre del usuario
+    */
+    function selectIdPerson(){
+        try {
+            $connection = connect();
+
+            $sql = "SELECT id FROM person WHERE email = :email";
+
+            $querySQL = $connection->prepare($sql);
+            $querySQL->bindValue(':email', $_REQUEST["email"], PDO::PARAM_STR);
+
+            $querySQL->execute();
+            $id = $querySQL->fetchAll();
+
+            return $id;
+
+        } catch(PDOException $error) {
+            $error = $error->getMessage();
+        }
+    }
+    
 ?>

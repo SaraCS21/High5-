@@ -7,34 +7,32 @@
         * los valores de un nuevo comentario, pasados por un formulario,
         * en su respectiva tabla.
         *
-        * @param por $_POST -> algunos valores del comentario [content, idPost, idUser]
+        * @param por $_POST -> algunos valores del comentario [content, idPost]
+        * @param por $_POST -> algunos valores del comentario [idUser]
         *
-        * @global $_REQUEST
+        * @global $_REQUEST, $_SESSION
     */
     function createComent(){
         try {
             $connection = connect();
 
-            $coment = [
-                "idUser" => $_SESSION["idUser"],
-                "idPost" => $_REQUEST["idPost"],
-                "content" => $_REQUEST["content"],
-                "publicationDate" => date('Y-m-d') // Fecha actual
-            ];
+            $querySQL = $connection->prepare
+            ("INSERT INTO coment (idUser, idPost, content, publicationDate) VALUES
+            (:idUser, :idPost, :content, :publicationDate)");
 
-            $querySQL = "INSERT INTO coment (idUser, idPost, content, publicationDate)";
-            $querySQL .= "VALUES (:" . implode(", :", array_keys($coment)) . ")";
+            $querySQL->bindValue(':idUser', $_SESSION["idUser"], PDO::PARAM_INT);
+            $querySQL->bindValue(':idPost', $_REQUEST["idPost"], PDO::PARAM_INT);
+            $querySQL->bindValue(':content', $_REQUEST["content"], PDO::PARAM_STR);
+            $querySQL->bindValue(':publicationDate', date('Y-m-d'), PDO::PARAM_STR); // Fecha actual
 
-            $sentence = $connection->prepare($querySQL);
-            $sentence->execute($coment);
+            $querySQL->execute();
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
-        /**
+    /**
         * Actualización de los datos de un comentario
         *
         * Esta función se conecta a la Base de Datos para buscar 
@@ -62,8 +60,7 @@
             $querySQL->execute();
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
@@ -89,8 +86,7 @@
             $querySQL->execute();
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
@@ -101,17 +97,20 @@
         * comentarios por el "idPost" y devolver sus datos
         *
         * @param int @idPost -> clave del post del que queramos buscar comentarios
+        *
+        * @return array $coment -> un array con los valores de los comentarios encontrados
     */
     function selectComentPost($idPost){
         try {
             $connection = connect();
 
-            $querySQL = "SELECT * FROM coment WHERE idPost = $idPost";
-            $sentence = $connection->prepare($querySQL);
-            $sentence->execute();
+            $sql = "SELECT * FROM coment WHERE idPost = :idPost";
 
-            $coment = $sentence->fetchAll();
-            $continue = ($coment && $sentence->rowCount()>0) ? true : false;
+            $querySQL = $connection->prepare($sql);
+            $querySQL->bindValue(':idPost', $idPost, PDO::PARAM_INT);
+            $querySQL->execute();
+
+            $coment = $querySQL->fetchAll();
 
             return $coment;
 
@@ -120,18 +119,27 @@
         }
     }
 
+    /**
+        * Contador de comentarios
+        *
+        * Esta función se conecta a la Base de Datos para buscar comentarios 
+        * por el "idPost" y devolver la cantidad de comentarios que tiene ese post
+        *
+        * @param int @idPost -> clave del post del que queramos buscar comentarios
+        *
+        * @return int $querySQL->rowCount() -> número de comentarios encontrados
+    */
     function contComents($idPost){
         try {
             $connection = connect();
 
-            $querySQL = "SELECT * FROM coment WHERE idPost = $idPost";
-            $sentence = $connection->prepare($querySQL);
-            $sentence->execute();
+            $sql = "SELECT * FROM coment WHERE idPost = :idPost";
 
-            $coment = $sentence->fetchAll();
-            $continue = ($coment && $sentence->rowCount()>0) ? true : false;
-
-            return $sentence->rowCount();
+            $querySQL = $connection->prepare($sql);
+            $querySQL->bindValue(':idPost', $idPost, PDO::PARAM_INT);
+            $querySQL->execute();
+            
+            return $querySQL->rowCount();
 
         } catch(PDOException $error) {
             $error = $error->getMessage();

@@ -8,21 +8,7 @@
             Header("Location: ./index.php?url=login");
         }
 
-        try {
-            $connection = connect();
-
-            $id = $_SESSION["idUser"];
-            // Seleccionamos todos los datos del usuario con la sesión activa
-            $querySQL = "SELECT * FROM person WHERE id = $id";
-            $sentence = $connection->prepare($querySQL);
-            $sentence->execute();
-
-            $userValues = $sentence->fetchAll();
-            $continue = ($userValues && $sentence->rowCount()>0) ? true : false;
-
-        } catch(PDOException $error) {
-            $error = $error->getMessage();
-        }
+        $userValues = selectPerson($_SESSION["idUser"]);
 
         // En caso de querer cerrar sesión...
         if (isset($_REQUEST["logOut"])){

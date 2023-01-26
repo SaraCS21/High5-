@@ -40,8 +40,7 @@
             }
             
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
@@ -61,24 +60,21 @@
         try {
             $connection = connect();
 
-            $post = [
-                "content" => $_REQUEST["content"],
-                "title" => $_REQUEST["title"],
-                "theme" => $_REQUEST["theme"],
-                "publicationDate" => date('Y-m-d'), // Fecha actual
-                "idUser" => $_SESSION["idUser"], // Usuario con sesión activa
-                "numViews" => 0 // Número de vistas al principio
-            ];
+            $querySQL = $connection->prepare
+            ("INSERT INTO post (content, title, theme, publicationDate, idUser, numViews) VALUES
+            (:content, :title, :theme, :publicationDate, :idUser, :numViews)");
 
-            $querySQL = "INSERT INTO post (content, title, theme, publicationDate, idUser, numViews)";
-            $querySQL .= "VALUES (:" . implode(", :", array_keys($post)) . ")";
+            $querySQL->bindValue(':content', $_REQUEST["content"], PDO::PARAM_STR);
+            $querySQL->bindValue(':title', $_REQUEST["title"], PDO::PARAM_STR);
+            $querySQL->bindValue(':theme', $_REQUEST["theme"], PDO::PARAM_STR);
+            $querySQL->bindValue(':publicationDate', date('Y-m-d'), PDO::PARAM_STR); // Fecha actual
+            $querySQL->bindValue(':idUser', $_SESSION["idUser"], PDO::PARAM_INT); // Usuario con sesión activa
+            $querySQL->bindValue(':numViews', 0, PDO::PARAM_INT); // Número de vistas al principio
 
-            $sentence = $connection->prepare($querySQL);
-            $sentence->execute($post);
+            $querySQL->execute();
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
@@ -110,8 +106,7 @@
             $querySQL->execute();
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
@@ -139,8 +134,7 @@
             $querySQL->execute();
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
@@ -152,7 +146,8 @@
         *
         * @param int @idPost -> clave del post que queramos buscar
         *
-        * @return array -> devuelve un array con los valores del post seleccionado
+        * @return -> false en caso de que el post no exista,
+        * un array con los valores en caso de que el post si exista
     */
     function selectPost($idPost){
         try {
@@ -171,11 +166,47 @@
             return ($continue) ? $postValues : false;
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
+        /**
+        * Selección de todos los posts
+        *
+        * Esta función se conecta a la Base de Datos para buscar 
+        * todos los posts y devolverlos.
+        *
+        * @return array $posts -> array con los valores de todos los posts
+    */
+    function selectAllPost(){
+        try {
+            $connection = connect();
+
+            $querySQL = "SELECT * FROM post";
+            $sentence = $connection->prepare($querySQL);
+            $sentence->execute();
+    
+            $posts = $sentence->fetchAll();
+            $continuePost = ($posts && $sentence->rowCount()>0) ? true : false;
+
+            return $posts;
+
+        } catch(PDOException $error) {
+            $error = $error->getMessage();
+        }
+    }
+
+    /**
+        * Selección del número de vistas de un post
+        *
+        * Esta función se conecta a la Base de Datos para buscar 
+        * a un post por su "id" y recoger la cantidad de número 
+        * de vistas que tiene.
+        *
+        * @param int @idPost -> clave del post que queramos buscar
+        *
+        * @return int $views[0][0] -> número de visitas del post
+    */
     function getViews($idPost){
         try {
             $connection = connect();
@@ -193,11 +224,18 @@
             return $views[0][0];
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 
+    /**
+        * Incrementación del número de vistas de un post
+        *
+        * Esta función se conecta a la Base de Datos para buscar 
+        * a un post por su "id" e incrementar su valor en 1.
+        *
+        * @param int @idPost -> clave del post que queramos buscar
+    */
     function incrementViews($idPost){
         try {
             $connection = connect();
@@ -213,8 +251,7 @@
             $querySQL->execute();
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
         }
     }
 ?>

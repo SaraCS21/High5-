@@ -22,8 +22,7 @@
         *
         * @param string @email -> Dirección de correo 
         *
-        * @return boolean -> true en caso de que el correo esté bien formado 
-        * @return string -> en caso de que el correo no esté bien formado
+        * @return string -> vacío en caso de que se cumpla y con un mensaje de error en caso de que no se cumpla
     */
     function validateEmail($email){
         $errors = require "./config/errors.php";
@@ -42,7 +41,7 @@
         * @param string @pass -> Contraseña 1 
         * @param string @confirmPass -> Contraseña 2
         *
-        * @return boolean -> true en caso de que ambas contraseñas sean iguales
+        * @return string -> vacío en caso de que se cumpla y con un mensaje de error en caso de que no se cumpla
     */
     function validatePassword($pass, $confirmPass){
         $errors = require "./config/errors.php";
@@ -70,7 +69,7 @@
         *
         * @global $_REQUEST
         *
-        * @return boolean -> true en caso de pasar bien todas las validaciones 
+        * @return string -> vacío en caso de que se cumpla y con un mensaje de error en caso de que no se cumpla
     */
     function comprobeInsert($keysInsert, $typeForm){
         $errors = require "./config/errors.php";
@@ -100,7 +99,6 @@
 
                     } else if (validatePassword($_REQUEST["password"], $_REQUEST["confirmPassword"]) !== ""){
                         $result = validatePassword($_REQUEST["password"], $_REQUEST["confirmPassword"]);
-
                     } 
 
                 // En caso de estar en un formulario de login...
@@ -111,17 +109,14 @@
 
                     } else if (selectBlockPerson() === "block") {
                         $errors["errors"]["blockUser"];
-
                     }
 
                 // En caso de estar en un formulario de creación de nuevos temas o envío de datos...
                 } else if ($typeForm === "createTheme" || $typeForm === "send" ){
                     $result = "";
-                    
                 }
             }
         }
-
         return $result;
     }
 
@@ -135,7 +130,7 @@
         * @param string @keysInsert -> todas las claves del formulario
         * @param string @typeForm -> tipo de formulario en el que nos encontramos
         * 
-        * @return boolean -> true en caso de pasar bien todas las validaciones 
+        * @return string -> vacío en caso de que se cumpla y con un mensaje de error en caso de que no se cumpla
     */
     function validate($typeForm, $keysInsert){
         $errors = require "./config/errors.php";
@@ -168,7 +163,7 @@
         * @param string @password -> contraseña
         * @param string @passwordHash -> contraseña encriptada
         *
-        * @return boolean -> true en caso de que ambas contraseñas coincidan
+        * @return boolean -> true en caso de que ambas contraseñas coincidan, false en caso contrario
     */
     function verifyPassword($password, $passwordHash){
         $result = (password_verify($password, $passwordHash)) ? true : false;

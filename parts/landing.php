@@ -7,25 +7,12 @@
         Header("Location: ./index.php?url=login");
     }
 
-    try {
-        $connection = connect();
-
-        $querySQL = "SELECT * FROM post";
-        $sentence = $connection->prepare($querySQL);
-        $sentence->execute();
-
-        $posts = $sentence->fetchAll();
-        $continue = ($posts && $sentence->rowCount()>0) ? true : false;
-
-    } catch(PDOException $error) {
-        $error = $error->getMessage();
-    }
-
+    // En caso de querer crear un nuevo post
     if (isset($_REQUEST["newTheme"])){
         Header("Location: ./index.php?url=newTheme");
-
     } 
 
+    $posts = selectAllPost();
 ?>
 
 <section id="about" class="p-4">
@@ -61,7 +48,7 @@
 
                 <!-- Mostramos todos los posts de nuestra Base de Datos -->
                 <?php 
-                    if ($continue) {
+                    if ($posts) {
                         foreach($posts as $row) {
                 ?>
 

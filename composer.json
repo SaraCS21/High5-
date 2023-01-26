@@ -1,0 +1,21 @@
+{
+    "name": "proyectodsw/high5",
+    "description": "Proyecto PHP 8, MariaDB, Bootstrap",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Config\\" : "./config",
+            "Controllers\\" : "./controllers",
+            "Parts\\" : "./parts"
+        }
+    },
+    "authors": [
+        {
+            "name": "Sara del Pino Cabrera Sánchez",
+            "email": "saracs15.scssn@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.5"
+    }
+}

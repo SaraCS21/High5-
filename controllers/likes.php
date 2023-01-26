@@ -1,32 +1,53 @@
 <?php
 
+    /**
+        * Contador de likes
+        *
+        * Esta función se conecta a la Base de Datos para buscar likes 
+        * por el "idPost" y devolver la cantidad de likes que tiene ese post
+        *
+        * @param int @idPost -> clave del post del que queramos buscar likes
+        *
+        * @return int $querySQL->rowCount() -> número de likes encontrados
+    */
     function countLikesPost($idPost){
         try {
             $connection = connect();
 
-            $querySQL = "SELECT * FROM likes WHERE idPost = $idPost";
-            $sentence = $connection->prepare($querySQL);
-            $sentence->execute();
+            $sql = "SELECT * FROM likes WHERE idPost = :idPost";
 
-            $likes = $sentence->fetchAll();
-            $continue = ($likes && $sentence->rowCount()>0) ? true : false;
-
-            return $sentence->rowCount();
+            $querySQL = $connection->prepare($sql);
+            $querySQL->bindValue(':idPost', $idPost, PDO::PARAM_INT);
+            $querySQL->execute();
+            
+            return $querySQL->rowCount();
 
         } catch(PDOException $error) {
             $error = $error->getMessage();
         }
     }
 
+    /**
+        * Selección de likes
+        *
+        * Esta función se conecta a la Base de Datos para buscar 
+        * likes por el "idPost" y devolver sus datos
+        *
+        * @param int @idPost -> clave del post del que queramos buscar likes
+        *
+        * @return array $likes -> un array con los valores de los likes encontrados
+    */
     function getLikesPost($idPost){
         try {
             $connection = connect();
 
-            $querySQL = "SELECT * FROM likes WHERE idPost = $idPost";
-            $sentence = $connection->prepare($querySQL);
-            $sentence->execute();
+            $sql = "SELECT idUser FROM likes WHERE idPost = :idPost";
 
-            $likes = $sentence->fetchAll();
+            $querySQL = $connection->prepare($sql);
+            $querySQL->bindValue(':idPost', $idPost, PDO::PARAM_INT);
+            $querySQL->execute();
+            
+            $likes = $querySQL->fetchAll(PDO::FETCH_ASSOC);
             return $likes;
 
         } catch(PDOException $error) {
@@ -34,46 +55,60 @@
         }
     }
 
+    /**
+        * Creación de likes 
+        *
+        * Esta función se conecta a la Base de Datos para insertar
+        * los valores de un nuevo like en su respectiva tabla.
+        *
+        * @param por $_POST -> el id del post [idPost]
+        * @param por $_SESSION -> el id del usuario [idUser]
+        *
+        * @global $_REQUEST, $_SESSION
+    */
     function setLike(){
         try {
             $connection = connect();
 
-            $like = [
-                "idUser" => $_SESSION["idUser"],
-                "idPost" => $_REQUEST["idPost"]
-            ];
+            $querySQL = $connection->prepare
+            ("INSERT INTO likes (idUser, idPost) VALUES
+            (:idUser, :idPost)");
 
-            $querySQL = "INSERT INTO likes (idUser, idPost)";
-            $querySQL .= "VALUES (:" . implode(", :", array_keys($like)) . ")";
-
-            $sentence = $connection->prepare($querySQL);
-            $sentence->execute($like);
-
-        } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
-        }
-    }
-
-    function deleteLike(){
-        try {
-            $connection = connect();
-
-            $sql = "DELETE FROM likes WHERE idUser = :idUser AND idPost = :idPost";
-
-            $querySQL = $connection->prepare($sql);
-
-            $idUser = $_SESSION["idUser"];
-            $querySQL->bindValue(':idUser', $idUser, PDO::PARAM_INT);
-            
-            $idPost = $_REQUEST["idPost"];
-            $querySQL->bindValue(':idPost', $idPost, PDO::PARAM_INT);
+            $querySQL->bindValue(':idUser', $_SESSION["idUser"], PDO::PARAM_INT);
+            $querySQL->bindValue(':idPost', $_REQUEST["idPost"], PDO::PARAM_INT);
 
             $querySQL->execute();
 
         } catch(PDOException $error) {
-            $result["error"] = true;
-            $result["mensaje"] = $error->getMessage();
+            $error = $error->getMessage();
+        }
+    }
+
+    /**
+        * Borrado de un like
+        *
+        * Esta función se conecta a la Base de Datos para buscar 
+        * a un like por el "idUser" y el "idPost" y eliminarlo 
+        *
+        * @param por $_POST -> el id del post [idPost]
+        * @param por $_SESSION -> el id del usuario [idUser]
+        *
+        * @global $_REQUEST, $_SESSION
+    */
+    function deleteLike(){
+        try {
+            $connection = connect();
+
+            $querySQL = $connection->prepare
+            ("DELETE FROM likes WHERE idUser = :idUser AND idPost = :idPost");
+
+            $querySQL->bindValue(':idUser', $_SESSION["idUser"], PDO::PARAM_INT);
+            $querySQL->bindValue(':idPost', $_REQUEST["idPost"], PDO::PARAM_INT);
+
+            $querySQL->execute();
+
+        } catch(PDOException $error) {
+            $error = $error->getMessage();
         }
     }
 

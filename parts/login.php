@@ -6,10 +6,6 @@
 
         // En caso de darle al botón de loguearnos...
         if(isset($_REQUEST["login"])){
-            $result = [
-                "error" => false,
-                "mensaje" => "Login exitoso"
-            ];
 
             // Las claves de nuestro formulario
             $keysInsert = ["email", "password", "url"];
@@ -25,19 +21,8 @@
 
     <?php
                 } else {
-                    $connection = connect();
-
-                    // Obtenemos el "id" de la persona a través de su "email"
-                    $email = $_REQUEST["email"];
-                    $querySQL = "SELECT id FROM person WHERE email = '$email'";
-                    $sentence = $connection->prepare($querySQL);
-                    $sentence->execute();
-            
-                    $valueUser = $sentence->fetchAll();
-                    $continue = ($valueUser && $sentence->rowCount()>0) ? true : false;
-
                     // Ponemos el "id" dentro de la sesión
-                    $_SESSION["idUser"] = ($continue) ? $valueUser[0][0] : 0;
+                    $_SESSION["idUser"] = (selectIdPerson) ? selectIdPerson[0][0] : 0;
                     // Nos movemos a la página principal
                     Header("Location: ./index.php?url=landing");
                 }
@@ -49,14 +34,13 @@
 <div class="w-50 alert alert-danger" role="alert"><?= $validate ?></div>
 
     <?php
+            }
 
-        }
-    
         // En caso de querer registrarnos...
-    } else if (isset($_REQUEST["register"])){
-        // Nos movemos a la página de registro
-        Header("Location: ./index.php?url=register");
-    }
+        } else if (isset($_REQUEST["register"])){
+            // Nos movemos a la página de registro
+            Header("Location: ./index.php?url=register");
+        }
     ?>
 
         <div class="w-100 row d-flex justify-content-center align-items-center mt-5">
