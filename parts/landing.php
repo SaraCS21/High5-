@@ -1,6 +1,6 @@
 <?php
-    require "./controllers/coment.php";
-    require "./controllers/likes.php";
+    require "./controllers/Coment.php";
+    require "./controllers/Likes.php";
 
     // En caso de no tener una sesión iniciada...
     if ($_SESSION["idUser"] === 0){
@@ -12,7 +12,7 @@
         Header("Location: ./index.php?url=newTheme");
     } 
 
-    $posts = selectAllPost();
+    $posts = Post::selectAllPost();
 ?>
 
 <section id="about" class="p-4">
@@ -62,19 +62,19 @@
                             <div class="fs-4">
                                 <i class='bx bx-show me-2 position-relative'>
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.8rem; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
-                                        <?= getViews($row["id"]) ?>
+                                        <?= Post::getViews($row["id"]) ?>
                                     </span>
                                 </i>
 
                                 <i class='bx bx-like me-2 position-relative'>
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.8rem; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
-                                        <?= countLikesPost($row["id"]) ?>
+                                        <?= Likes::countLikesPost($row["id"]) ?>
                                     </span>
                                 </i>
 
                                 <i class='bx bx-chat position-relative'>
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.8rem; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
-                                        <?= contComents($row["id"]) ?>
+                                        <?= Coment::contComents($row["id"]) ?>
                                     </span>
                                 </i>
                             </div>

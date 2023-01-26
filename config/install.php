@@ -11,7 +11,7 @@
     }
 
     // Creaciones de valores por defecto
-    createAdmin();
-    createDefaultPost();
+    Person::createAdmin();
+    Post::createDefaultPost();
 
 ?>

@@ -1,10 +1,10 @@
 <?php
 
-    if (selectTypePerson() !== "admin"){
+    if (Person::selectTypePerson() !== "admin"){
         Header("Location: ./index.php?url=landing");
     }
 
-    $values = selectPost($_REQUEST["idPost"])[0];
+    $values = Post::selectPost($_REQUEST["idPost"])[0];
 
 ?>
 

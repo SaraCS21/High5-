@@ -1,10 +1,10 @@
 <?php
 
-    if (selectTypePerson() !== "admin"){
+    if (Person::selectTypePerson() !== "admin"){
         Header("Location: ./index.php?url=landing");
     }
 
-    $values = selectPerson($_REQUEST["idUser"])[0];
+    $values = Person::selectPerson($_REQUEST["idUser"])[0];
 ?>
 
 <div class="w-100 row d-flex justify-content-center align-items-center mt-5">

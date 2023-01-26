@@ -21,7 +21,7 @@
             // Validamos los datos...
             if ($validate === ""){
                 // Creamos el nuevo post
-                createPost();
+                Post::createPost();
                 // Nos movemos a la página principal
                 Header("Location: ./index.php?url=landing");
             

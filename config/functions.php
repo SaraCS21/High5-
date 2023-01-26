@@ -91,7 +91,7 @@
                 // En caso de estar en un formulario de registro o de actualización de datos...
                 if ($typeForm === "register" || $typeForm === "update" ){
 
-                    if ($typeForm === "register" && in_array($_REQUEST["email"], allEmailPerson()[0])){
+                    if ($typeForm === "register" && in_array($_REQUEST["email"], Person::allEmailPerson()[0])){
                         $result = $errors["errors"]["emailExists"];
 
                     } else if (validateEmail($_REQUEST["email"]) !== ""){
@@ -107,7 +107,7 @@
                     if (validateEmail($_REQUEST["email"]) !== ""){
                         $result = validateEmail($_REQUEST["email"]);
 
-                    } else if (selectBlockPerson() === "block") {
+                    } else if (Person::selectBlockPerson() === "block") {
                         $errors["errors"]["blockUser"];
                     }
 

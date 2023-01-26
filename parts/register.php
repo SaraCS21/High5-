@@ -16,7 +16,7 @@
                 // Validamos los datos...
                 if ($validate === ""){
                     // Creamos el nuevo usuario
-                    createPerson();
+                    Person::createPerson();
                     // Nos movemos a la página principal
                     Header("Location: ./index.php?url=login");
         ?>

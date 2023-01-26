@@ -14,15 +14,15 @@
             // Validamos los datos...
             if ($validate === ""){
                 // En caso de que algo falle...
-                if (comprobePerson() !== ""){  
+                if (Person::comprobePerson() !== ""){  
     ?>
 
-<div class="w-50 alert alert-danger" role="alert"><?= comprobePerson() ?></div>
+<div class="w-50 alert alert-danger" role="alert"><?= Person::comprobePerson() ?></div>
 
     <?php
                 } else {
                     // Ponemos el "id" dentro de la sesión
-                    $_SESSION["idUser"] = (selectIdPerson) ? selectIdPerson[0][0] : 0;
+                    $_SESSION["idUser"] = (Person::selectIdPerson()) ? Person::selectIdPerson()[0][0] : 0;
                     // Nos movemos a la página principal
                     Header("Location: ./index.php?url=landing");
                 }

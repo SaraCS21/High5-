@@ -8,7 +8,7 @@
             Header("Location: ./index.php?url=login");
         }
 
-        $userValues = selectPerson($_SESSION["idUser"]);
+        $userValues = Person::selectPerson($_SESSION["idUser"]);
 
         // En caso de querer cerrar sesión...
         if (isset($_REQUEST["logOut"])){
@@ -27,7 +27,7 @@
             // Validamos los datos...
             if ($validate === "" && $_REQUEST["password"] !== "" && $_REQUEST["confirmPassword"] !== ""){
                 // Actualizamos los datos del usuario
-                updatePerson();
+                Person::updatePerson();
     ?>
 
     <div class="w-50 alert alert-success" role="alert">Los datos se han actualizado correctamente</div>
@@ -43,7 +43,7 @@
         // En caso de querer eliminar al usuario...
         } else if (isset($_REQUEST["delete"])){
             // Eliminamos al usuario
-            deletePerson();
+            Person::deletePerson();
             // Destruimos la sesión
             session_destroy();
             // Nos movemos de página

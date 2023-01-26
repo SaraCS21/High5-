@@ -1,24 +1,24 @@
 <?php
     $errors = require "./config/errors.php";
-    $errors = require "./controllers/likes.php";
+    $errors = require "./controllers/Likes.php";
 
     // En caso de no tener una sesión iniciada...
     if ($_SESSION["idUser"] === 0){
         Header("Location: ./index.php?url=login");
     }
 
-    require "./controllers/coment.php";
+    require "./controllers/Coment.php";
     $continueEdit = true;
     $continueEditComent = true;
 
     $id = isset($_REQUEST["button"]) ? $_REQUEST["button"] : $_REQUEST["idPost"];
-    $post = selectPost($id);
+    $post = Post::selectPost($id);
 
     // Incrementamos las visitas del post cada vez que entramos en este
-    incrementViews($id);
+    Post::incrementViews($id);
 
     // Obtenemos todos los likes que tiene el post en el que nos encontremos
-    $likes = (getLikesPost($id) !== []) ? getLikesPost($id) : [];
+    $likes = (Likes::getLikesPost($id) !== []) ? Likes::getLikesPost($id) : [];
     $arrayLikes = [];
 
     foreach ($likes as $like) {
@@ -35,19 +35,19 @@
         // Validamos los datos...
         if (validate("send", $keysInsert) === ""){
             // Creamos el nuevo comentario
-            createComent();
+            Coment::createComent();
         } 
 
     // En caso de que queramos eliminar un post...
     } else if (isset($_REQUEST["delete"])){
-        deletePost();
+        Post::deletePost();
         Header("Location: ./index.php?url=landing");
 
 
     } else if (isset($_REQUEST["edit"])){
         // Validamos los datos...
         if (!empty($_REQUEST["content"]) && !empty($_REQUEST["title"]) && !empty($_REQUEST["theme"])){
-            updatePost();
+            Post::updatePost();
             Header("Location: ./index.php?url=landing");
 
         } else {
@@ -58,7 +58,7 @@
     } else if (isset($_REQUEST["editComent"])){
         // Validamos los datos...
         if (!empty($_REQUEST["content"])){
-            updateComent();
+            Coment::updateComent();
 
         } else {
             $continueEditComent = false;
@@ -66,16 +66,16 @@
 
     // En caso de que queramos eliminar un comentario...
     } else if (isset($_REQUEST["deleteComent"])){
-        deleteComent();
+        Coment::deleteComent();
 
     // En caso de que queramos dar like a un post...
     } else if (isset($_REQUEST["like"])){
-        setLike();
+        Likes::setLike();
         Header("Location: ./index.php?url=post&idPost=$id");
 
     // En caso de que queramos dar dislike a un post...
     } else if (isset($_REQUEST["dislike"])){
-        deleteLike();
+        Likes::deleteLike();
         Header("Location: ./index.php?url=post&idPost=$id");
     }
 ?>
@@ -100,7 +100,7 @@
                             // Obtenemos el id del usuario que ha escrito el post
                             $idUser = $post[0]["idUser"];
                             // Seleccionamos el nombre de ese usuario
-                            $name = selectNamePerson($idUser);
+                            $name = Person::selectNamePerson($idUser);
 
                             foreach($post as $row) {
                                 // Obtenemos el "id" del post en el que nos encontramos
@@ -250,7 +250,7 @@
             <div class="row gx-4 justify-content-center mt-4">
                 
                 <?php
-                    $coment = selectComentPost($idPost);
+                    $coment = Coment::selectComentPost($idPost);
                     // En caso de encontrar comentarios...
                     if ($coment){
                 ?>
@@ -263,7 +263,7 @@
                         foreach($coment as $value){
                             // Obtenemos el "id" del usuario que ha comentado
                             $idUserComent = $value["idUser"];
-                            $namePost = selectNamePerson($idUserComent);
+                            $namePost = Person::selectNamePerson($idUserComent);
                     ?>
 
                     <div class="p-3">

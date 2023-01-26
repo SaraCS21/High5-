@@ -1,8 +1,8 @@
 <?php
-    $typeUser = selectTypePerson();
+    $typeUser = Person::selectTypePerson();
 
     // En caso de que el usuario no sea un administrador...
-    if (selectTypePerson() !== "admin"){
+    if (Person::selectTypePerson() !== "admin"){
         Header("Location: ./index.php?url=landing");
     }
 
@@ -12,7 +12,7 @@
 
     // En caso de que queramos ver la información de los posts...
     if (isset($_REQUEST["postInfo"])){
-        $posts = selectAllPost();
+        $posts = Post::selectAllPost();
 
         // Todas las claves para los th de la tabla
         $keys = ["Id", "Contenido", "Título", "Tema", "Publicación", "Id Usuario"];
@@ -20,7 +20,7 @@
     
     // En caso de que queramos ver la información de los usuarios...
     if (isset($_REQUEST["userInfo"])){
-        $users = selectAllPerson();
+        $users = Person::selectAllPerson();
 
         // Todas las claves para los th de la tabla
         $keys = ["Id", "Nombre", "Apellido", "Correo", "Edad", "Tipo", "Bloqueado"];
@@ -28,11 +28,11 @@
 
     // En caso de querer eliminar un post...
     if (isset($_REQUEST["deletePost"])){
-        deletePost();
+        Post::deletePost();
 
     // En caso de querer eliminar un usuario...
     } else if (isset($_REQUEST["deleteUser"])){
-        deletePerson();
+        Person::deletePerson();
 
     // En caso de querer editar un post...
     } else if (isset($_REQUEST["editPost"])){
@@ -53,7 +53,7 @@
         // Validamos los datos...
         if (!empty($_REQUEST["name"]) && !empty($_REQUEST["surname"]) && !empty($_REQUEST["age"])){
             // Editamos al usuario
-            updatePerson();
+            Person::updatePerson();
             Header("Location: ./index.php?url=adminPanel");
         }     
 
@@ -62,7 +62,7 @@
         // Validamos los datos...
         if (!empty($_REQUEST["content"]) && !empty($_REQUEST["title"]) && !empty($_REQUEST["theme"])){
             // Editamos el post
-            updatePost();
+            Post::updatePost();
             Header("Location: ./index.php?url=adminPanel");
         }         
     }

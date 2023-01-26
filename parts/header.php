@@ -8,8 +8,8 @@
     
     require "./config/functions.php";
     require "./config/create.php";
-    require "./controllers/person.php";
-    require "./controllers/post.php";
+    require "./controllers/Person.php";
+    require "./controllers/Post.php";
 
     // En caso de que queramos movernos a la página principal...
     if (isset($_REQUEST["landing"])){
@@ -58,7 +58,7 @@
                 <div class="d-flex justify-content-end">
 
                     <!-- Si el usuario con sesión activa es un administrador podremos ver un icono extra para acceder al panel de administración -->
-                    <?php if (selectTypePerson() === "admin"){ ?>
+                    <?php if (Person::selectTypePerson() === "admin"){ ?>
 
                     <button type="submit" class="d-flex align-items-center border-0 bg-light" name="adminPanel" aria-expanded="false">
                         <i class='bx bxs-cog fs-3 text-dark'></i>                
