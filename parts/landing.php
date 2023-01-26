@@ -1,6 +1,8 @@
 <?php
-    require "./controllers/Coment.php";
-    require "./controllers/Likes.php";
+
+    use Controllers\Post;
+    use Controllers\Likes;
+    use Controllers\Coment;
 
     // En caso de no tener una sesión iniciada...
     if ($_SESSION["idUser"] === 0){

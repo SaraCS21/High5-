@@ -1,13 +1,16 @@
 <?php
     $errors = require "./config/errors.php";
-    $errors = require "./controllers/Likes.php";
+
+    use Controllers\Post;
+    use Controllers\Likes;
+    use Controllers\Coment;
+    use Controllers\Person;
 
     // En caso de no tener una sesión iniciada...
     if ($_SESSION["idUser"] === 0){
         Header("Location: ./index.php?url=login");
     }
 
-    require "./controllers/Coment.php";
     $continueEdit = true;
     $continueEditComent = true;
 

@@ -1,3 +1,7 @@
+<?php
+    use Controllers\Person;
+?>
+
 <section>
     <div class="container-fluid h-custom d-flex flex-wrap justify-content-center mt-5">
 

@@ -1,5 +1,8 @@
 <?php
 
+    use Controllers\Post;
+    use Controllers\Person;
+
     if (Person::selectTypePerson() !== "admin"){
         Header("Location: ./index.php?url=landing");
     }

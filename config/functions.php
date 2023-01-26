@@ -1,5 +1,7 @@
 <?php
     
+    use Controllers\Person;
+
     /**
         * Debug de arrays
         *

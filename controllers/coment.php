@@ -1,5 +1,10 @@
 <?php
 
+    namespace Controllers;
+
+    use PDO;
+    use PDOException;
+
     class Coment {
 
         /**

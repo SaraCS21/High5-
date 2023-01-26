@@ -1,5 +1,8 @@
 <?php
 
+    use Controllers\Person;
+    use Controllers\Post;
+
     // Instalación de la Base de Datos
     try{
         $connection = create();

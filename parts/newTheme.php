@@ -1,3 +1,7 @@
+<?php   
+    use Controllers\Post;
+?>
+
 <section>
     <div class="container-fluid h-custom d-flex flex-wrap justify-content-center" style="margin-top:8rem;">
 

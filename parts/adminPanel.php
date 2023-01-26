@@ -1,4 +1,8 @@
 <?php
+
+    use Controllers\Person;
+    use Controllers\Post;
+
     $typeUser = Person::selectTypePerson();
 
     // En caso de que el usuario no sea un administrador...

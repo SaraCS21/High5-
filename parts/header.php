@@ -6,10 +6,12 @@
 
     session_start(); // Iniciamos la sesión
     
+    require "./vendor/autoload.php";
+
     require "./config/functions.php";
     require "./config/create.php";
-    require "./controllers/Person.php";
-    require "./controllers/Post.php";
+
+    use Controllers\Person;
 
     // En caso de que queramos movernos a la página principal...
     if (isset($_REQUEST["landing"])){
