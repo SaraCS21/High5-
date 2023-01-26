@@ -6,8 +6,13 @@
     use PDOException;
     use Config\ConnectDB;
 
+    /**
+         * Clase encargada de controlar los posts
+         * 
+         * Se encarga de controlar todo lo referido al CRUD 
+         * de los posts dentro de la Base de Datos
+     */
     class Post {
-
         /**
             * Creación de un post por defecto
             *

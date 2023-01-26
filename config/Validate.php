@@ -4,6 +4,12 @@
 
     use Controllers\Person;
 
+    /**
+         * Clase encargada de validar parámetros
+         * 
+         * Se encarga de validar ciertos parámetros 
+         * pasados por los distintos formularios de la web
+     */
     class Validate {
         /**
             * Validación de email

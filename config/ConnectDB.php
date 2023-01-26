@@ -11,6 +11,12 @@
     $dotenv=Dotenv\Dotenv:: createImmutable(__DIR__ . "\..");
     $dotenv->safeLoad();
 
+    /**
+         * Clase encargada de conectarse a la Base de Datos
+         * 
+         * Se encarga de controlar todo lo referido a las conexiones
+         * con la Base de Datos y la instalación de esta
+     */
     class ConnectDB {
         /**
             * Crea la Base de Datos y devuelve su conexión
@@ -34,7 +40,7 @@
         /**
             * Devuelve una conexión con la Base de Datos
             *
-            * Esta función se encarga de conectarse la base de
+            * Esta función se encarga de conectarse a la base de
             * datos, con los parámetros guardados en config.php.
             *
             * @param por $_ENV -> valores para la conexión con la base de datos [host, dbname, user, password]
@@ -49,6 +55,12 @@
             return $connection;
         }
 
+        /**
+            * Instala la Base de Datos
+            *
+            * Esta función se encarga de instalar la Base de Datos
+            * y de crear ciertos valores por defecto.
+        */
         public static function install(){
             // Instalación de la Base de Datos
             try{

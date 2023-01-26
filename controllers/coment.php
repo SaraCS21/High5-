@@ -6,8 +6,13 @@
     use PDOException;
     use Config\ConnectDB;
 
+    /**
+         * Clase encargada de controlar los comentarios
+         * 
+         * Se encarga de controlar todo lo referido al CRUD 
+         * de los comentarios dentro de la Base de Datos
+     */
     class Coment {
-
         /**
             * Creación de comentarios en post
             *
@@ -16,7 +21,7 @@
             * en su respectiva tabla.
             *
             * @param por $_POST -> algunos valores del comentario [content, idPost]
-            * @param por $_POST -> algunos valores del comentario [idUser]
+            * @param por $_SESSION -> algunos valores del comentario [idUser]
             *
             * @global $_REQUEST, $_SESSION
         */

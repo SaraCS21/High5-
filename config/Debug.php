@@ -2,6 +2,12 @@
 
     namespace Config;
 
+    /**
+         * Clase encargada de debuguear ciertas cosas
+         * 
+         * Se encarga de crear métodos para poder debuguear 
+         * de manera más cómoda ciertos aspectos de nuestra aplicación.
+     */
     class Debug {
         /**
             * Debug de arrays

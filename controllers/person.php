@@ -7,8 +7,13 @@
     use Config\Validate;
     use Config\ConnectDB;
 
+    /**
+         * Clase encargada de controlar las personas
+         * 
+         * Se encarga de controlar todo lo referido al CRUD 
+         * de las personas dentro de la Base de Datos
+     */
     class Person {
-
         /**
             * Creación de un administrador
             *
@@ -308,36 +313,36 @@
             }
         }
 
-            /**
-                * Selección del email de una persona
-                *
-                * Esta función se conecta a la Base de Datos para buscar 
-                * a una persona por su "idUser" y devolver su email
-                *
-                * @param por $_SESSION -> id del usuario actual [idUser]
-                *
-                * @global $_SESSION
-                *
-                * @return array $email -> array con el email del usuario
-            */
-            public static function selectEmailPerson(){
-                try {
-                    $connection = ConnectDB::connect();
+        /**
+            * Selección del email de una persona
+            *
+            * Esta función se conecta a la Base de Datos para buscar 
+            * a una persona por su "idUser" y devolver su email
+            *
+            * @param por $_SESSION -> id del usuario actual [idUser]
+            *
+            * @global $_SESSION
+            *
+            * @return array $email -> array con el email del usuario
+        */
+        public static function selectEmailPerson(){
+            try {
+                $connection = ConnectDB::connect();
 
-                    $sql = "SELECT email FROM person WHERE id = :idUser";
+                $sql = "SELECT email FROM person WHERE id = :idUser";
 
-                    $querySQL = $connection->prepare($sql);
-                    $querySQL->bindValue(':idUser', $_SESSION["idUser"], PDO::PARAM_INT);
+                $querySQL = $connection->prepare($sql);
+                $querySQL->bindValue(':idUser', $_SESSION["idUser"], PDO::PARAM_INT);
 
-                    $querySQL->execute();
-                    $email = $querySQL->fetchAll();
+                $querySQL->execute();
+                $email = $querySQL->fetchAll();
 
-                    return $email;
+                return $email;
 
-                } catch(PDOException $error) {
-                    $error = $error->getMessage();
-                }
+            } catch(PDOException $error) {
+                $error = $error->getMessage();
             }
+        }
 
         /**
             * Obtención de todos los emails registrados
@@ -453,7 +458,5 @@
                 $error = $error->getMessage();
             }
         }
-
-        }
-    
+    }
 ?>
