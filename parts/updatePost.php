@@ -17,6 +17,8 @@
             Post::updatePost();
             Header("Location: ./index.php?url=updatePost&idPost=$idPost");
         }         
+    } else if (isset($_REQUEST["goBack"])){
+        Header("Location: ./index.php?url=adminPanel&postInfo=");
     }
 ?>
 
@@ -51,7 +53,8 @@
             <input type="hidden" name="idUser" value="<?= $values["idUser"] ?>">
             <input type="hidden" name="idPost" value="<?= $values["id"] ?>">
 
-            <div class="text-center text-lg-start mt-4 pt-2 d-flex justify-content-center">                        
+            <div class="text-center text-lg-start mt-4 pt-2 d-flex justify-content-between">                  
+                <input type="submit" name="goBack" class="btn btn-primary" style="padding-left: 1.5rem; padding-right: 1.5rem;" value="Volver atrás"/>
                 <input type="submit" name="updatePost" class="btn btn-warning" style="padding-left: 1.5rem; padding-right: 1.5rem;" value="Actualizar datos"/>
             </div>
         </form>

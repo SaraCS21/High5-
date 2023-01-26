@@ -1,5 +1,6 @@
 <?php   
     use Controllers\Post;
+    use Controllers\Person;
     use Config\Validate;
 ?>
 
@@ -17,6 +18,10 @@
         $email = Person::selectEmailPerson()[0][0];
         if (Person::selectBlockPerson($email) === "block"){
             Header("Location: ./index.php?url=login");
+        }
+
+        if (isset($_REQUEST["goBack"])){
+            Header("Location: ./index.php?url=landing");
         }
 
         if(isset($_REQUEST["createTheme"])){
@@ -47,7 +52,10 @@
         <div class="w-100 row d-flex justify-content-center align-items-center mt-5">
             <div class="col-md-8 col-lg-6 col-xl-4">
                 <h2 class="mb-5 text-center">Crea un nuevo espacio del que hablar</h2>
-                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="position-relative">
+                    <button type="submit" name="goBack" class="position-absolute border-0 bg-white" style="right:40rem;bottom:18.5rem;">
+                        <i class='bx bx-chevron-left fs-2'></i>
+                    </button>
                     
                     <div class="form-floating mb-3">
                         <input type="text" name="title" id="floatingTitle" class="form-control form-control-lg" placeholder="Enter title" maxlength="40"/>

@@ -87,6 +87,9 @@
     } else if (isset($_REQUEST["dislike"])){
         Likes::deleteLike();
         Header("Location: ./index.php?url=post&idPost=$id");
+
+    } else if (isset($_REQUEST["goBack"])){
+        Header("Location: ./index.php?url=landing");
     }
 ?>
 
@@ -103,7 +106,11 @@
                     <div class="w-100 alert alert-danger" role="alert"><?= $errors["errors"]["comentEmpty"] ?></div>
                 <?php } ?>
 
-                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="position-relative">
+                    <button type="submit" name="goBack" class="position-absolute border-0 bg-white" style="right:55rem;top:0.5rem;">
+                        <i class='bx bx-chevron-left fs-2'></i>
+                    </button>
+
                     <?php 
                         // En caso de que algún post coincida con el "id"...
                         if ($post) {

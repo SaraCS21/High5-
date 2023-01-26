@@ -16,6 +16,9 @@
             Person::updatePerson();
             Header("Location: ./index.php?url=updatePerson&idUser=$idUser");
         }    
+
+    } else if (isset($_REQUEST["goBack"])){
+            Header("Location: ./index.php?url=adminPanel&userInfo=");
     }
 ?>
 
@@ -83,7 +86,8 @@
             <input type="hidden" name="email" value="<?= $values["email"] ?>">
             <input type="hidden" name="editUser" value="<?= $values["id"] ?>">
 
-            <div class="text-center text-lg-start mt-4 pt-2 d-flex justify-content-center">                        
+            <div class="text-center text-lg-start mt-4 pt-2 d-flex justify-content-between">                        
+                <input type="submit" name="goBack" class="btn btn-primary" style="padding-left: 1.5rem; padding-right: 1.5rem;" value="Volver atrás"/>
                 <input type="submit" name="updatePerson" class="btn btn-warning" style="padding-left: 1.5rem; padding-right: 1.5rem;" value="Actualizar datos"/>
             </div>
         </form>

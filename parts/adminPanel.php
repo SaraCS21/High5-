@@ -52,6 +52,7 @@
         $idUser = $_REQUEST["editUser"];
         // Nos movemos a la página de edición del usuario
         Header("Location: ./index.php?url=updatePerson&idUser=$idUser");
+
     } 
 ?> 
 
