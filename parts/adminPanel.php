@@ -3,6 +3,7 @@
     use Controllers\Person;
     use Controllers\Post;
 
+    // Seleccionamos el tipo del usuario actual
     $typeUser = Person::selectTypePerson();
 
     // En caso de que el usuario no sea un administrador...
@@ -10,6 +11,7 @@
         Header("Location: ./index.php?url=landing");
     }
 
+    // Inicializamos algunas variables
     $posts = false;
     $users = false;
     $continueUpdatePost = false;

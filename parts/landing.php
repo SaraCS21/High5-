@@ -5,7 +5,7 @@
     use Controllers\Coment;
 
     // En caso de no tener una sesión iniciada...
-    if ($_SESSION["idUser"] === 0){
+    if ($_SESSION["idUser"] === 0 || !isset($_SESSION["idUser"])){
         Header("Location: ./index.php?url=login");
     }
 
@@ -14,6 +14,7 @@
         Header("Location: ./index.php?url=newTheme");
     } 
 
+    // Seleccionamos todos los post de nuestra Base de Datos
     $posts = Post::selectAllPost();
 ?>
 
@@ -45,7 +46,6 @@
                         <button type="submit" name="newTheme" class="btn btn-secondary">Crea un nuevo debate</button>
                     </form>
                 </div>
-                
                 <hr>
 
                 <!-- Mostramos todos los posts de nuestra Base de Datos -->
