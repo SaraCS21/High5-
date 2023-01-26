@@ -8,13 +8,22 @@
     }
 
     $values = Post::selectPost($_REQUEST["idPost"])[0];
+    $idPost = $_REQUEST["idPost"];
 
+    if (isset($_REQUEST["updatePost"])){
+        // Validamos los datos...
+        if (!empty($_REQUEST["content"]) && !empty($_REQUEST["title"]) && !empty($_REQUEST["theme"])){
+            // Editamos el post
+            Post::updatePost();
+            Header("Location: ./index.php?url=updatePost&idPost=$idPost");
+        }         
+    }
 ?>
 
 <div class="w-100 row d-flex justify-content-center align-items-center mt-5">
     <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
 
-        <form method="post" action="index.php?url=adminPanel">
+        <form method="post" action=<?= "index.php?url=updatePost&idPost=$idPost" ?>>
             <h2 class="text-center mt-5 mb-4">Actualizar datos del Post</h2>
 
             <div class="form-floating mb-4">

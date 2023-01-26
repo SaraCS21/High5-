@@ -2,6 +2,7 @@
 
     use Controllers\Person;
     use Controllers\Post;
+    use Config\Debug;
 
     // Seleccionamos el tipo del usuario actual
     $typeUser = Person::selectTypePerson();
@@ -52,26 +53,6 @@
         // Nos movemos a la página de edición del usuario
         Header("Location: ./index.php?url=updatePerson&idUser=$idUser");
     } 
-    
-    // Si venimos de actualizar a un usuario...
-    if (isset($_REQUEST["updatePerson"])){
-
-        // Validamos los datos...
-        if (!empty($_REQUEST["name"]) && !empty($_REQUEST["surname"]) && !empty($_REQUEST["age"])){
-            // Editamos al usuario
-            Person::updatePerson();
-            Header("Location: ./index.php?url=adminPanel");
-        }     
-
-    // Si venimos de actualizar un post...
-    } else if (isset($_REQUEST["updatePost"])){
-        // Validamos los datos...
-        if (!empty($_REQUEST["content"]) && !empty($_REQUEST["title"]) && !empty($_REQUEST["theme"])){
-            // Editamos el post
-            Post::updatePost();
-            Header("Location: ./index.php?url=adminPanel");
-        }         
-    }
 ?> 
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-light bg-white">

@@ -99,7 +99,7 @@
                             $result = self::validateEmail($_REQUEST["email"]);
 
                         } else if (Person::selectBlockPerson() === "block") {
-                            $errors["errors"]["blockUser"];
+                            $result = $errors["errors"]["blockUser"];
                         }
 
                     // En caso de estar en un formulario de creación de nuevos temas o envío de datos...

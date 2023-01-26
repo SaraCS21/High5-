@@ -1,17 +1,27 @@
 <?php
 
     use Controllers\Person;
+    use Config\Debug;
 
     if (Person::selectTypePerson() !== "admin"){
         Header("Location: ./index.php?url=landing");
     }
 
     $values = Person::selectPerson($_REQUEST["idUser"])[0];
+    $idUser = $_REQUEST["idUser"];
+
+    if (isset($_REQUEST["updatePerson"])){
+        if (!empty($_REQUEST["name"]) && !empty($_REQUEST["surname"]) && !empty($_REQUEST["age"])){
+            // Editamos al usuario
+            Person::updatePerson();
+            Header("Location: ./index.php?url=updatePerson&idUser=$idUser");
+        }    
+    }
 ?>
 
 <div class="w-100 row d-flex justify-content-center align-items-center mt-5">
     <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-        <form method="post" action="index.php?url=adminPanel">
+        <form method="post" action=<?= "index.php?url=updatePerson&idUser=$idUser" ?>>
             <h2 class="text-center mt-5 mb-4">Actualizar datos de <?= $values["name"] ?></h2>
             <div class="form-floating mb-4">
                 <input type="text" name="name" id="floatingName" class="form-control form-control-lg" value="<?= $values["name"] ?>" maxlength="30"/>

@@ -158,7 +158,9 @@
                 $querySQL->bindValue(':name', $_REQUEST["name"], PDO::PARAM_STR);
                 $querySQL->bindValue(':surname', $_REQUEST["surname"], PDO::PARAM_STR);
                 $querySQL->bindValue(':email', $_REQUEST["email"], PDO::PARAM_STR);
-                $querySQL->bindValue(':password', Validate::hashPassword($_REQUEST["password"]), PDO::PARAM_STR);
+
+                $password = $_REQUEST["updatePerson"] ? $_REQUEST["password"] : Validate::hashPassword($_REQUEST["password"]);
+                $querySQL->bindValue(':password', $password, PDO::PARAM_STR);
                 $querySQL->bindValue(':age', $_REQUEST["age"], PDO::PARAM_INT);
 
                 $type = (isset($_REQUEST["type"])) ? $_REQUEST["type"] : "user";
@@ -254,14 +256,15 @@
             * @return $block -> false en caso de que el usuario no exista, 
             * una string con el bloqueo en caso de que el usuario si exista
         */
-        public static function selectBlockPerson(){
+        public static function selectBlockPerson($email = ""){
             try {
                 $connection = ConnectDB::connect();
 
                 $sql = "SELECT block FROM person WHERE email = :email";
 
                 $querySQL = $connection->prepare($sql);
-                $querySQL->bindValue(':email', $_REQUEST["email"], PDO::PARAM_STR);
+                $email = isset($_REQUEST["email"]) ? $_REQUEST["email"] : $email;
+                $querySQL->bindValue(':email', $email, PDO::PARAM_STR);
 
                 $querySQL->execute();
                 $userValues = $querySQL->fetchAll();
@@ -304,6 +307,37 @@
                 $error = $error->getMessage();
             }
         }
+
+            /**
+                * Selección del email de una persona
+                *
+                * Esta función se conecta a la Base de Datos para buscar 
+                * a una persona por su "idUser" y devolver su email
+                *
+                * @param por $_SESSION -> id del usuario actual [idUser]
+                *
+                * @global $_SESSION
+                *
+                * @return array $email -> array con el email del usuario
+            */
+            public static function selectEmailPerson(){
+                try {
+                    $connection = ConnectDB::connect();
+
+                    $sql = "SELECT email FROM person WHERE id = :idUser";
+
+                    $querySQL = $connection->prepare($sql);
+                    $querySQL->bindValue(':idUser', $_SESSION["idUser"], PDO::PARAM_INT);
+
+                    $querySQL->execute();
+                    $email = $querySQL->fetchAll();
+
+                    return $email;
+
+                } catch(PDOException $error) {
+                    $error = $error->getMessage();
+                }
+            }
 
         /**
             * Obtención de todos los emails registrados

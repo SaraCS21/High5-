@@ -9,7 +9,13 @@
     <?php
 
         // En caso de no tener una sesión iniciada...
-        if ($_SESSION["idUser"] === 0){
+        if ($_SESSION["idUser"] === 0 || !isset($_SESSION["idUser"])){
+            Header("Location: ./index.php?url=login");
+        }
+
+        // En caso de tener la cuenta bloqueada...
+        $email = Person::selectEmailPerson()[0][0];
+        if (Person::selectBlockPerson($email) === "block"){
             Header("Location: ./index.php?url=login");
         }
 
@@ -33,6 +39,7 @@
             if ($validate === "" && $_REQUEST["password"] !== "" && $_REQUEST["confirmPassword"] !== ""){
                 // Actualizamos los datos del usuario
                 Person::updatePerson();
+                Header("Location: ./index.php?url=userConfig");
     ?>
 
     <div class="w-50 alert alert-success" role="alert">Los datos se han actualizado correctamente</div>
