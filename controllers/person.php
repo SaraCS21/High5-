@@ -4,6 +4,8 @@
 
     use PDO;
     use PDOException;
+    use Config\Validate;
+    use Config\ConnectDB;
 
     class Person {
 
@@ -18,7 +20,7 @@
         */
         public static function createAdmin(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
         
                 $querySQL = "SELECT * FROM person WHERE type = 'admin'";
                 $sentenceQuery = $connection->prepare($querySQL);
@@ -37,7 +39,7 @@
                     $querySQL->bindValue(':name', "Admin", PDO::PARAM_STR);
                     $querySQL->bindValue(':surname', "Admin", PDO::PARAM_STR);
                     $querySQL->bindValue(':email', "admin@high5.com", PDO::PARAM_STR);
-                    $querySQL->bindValue(':password', hashPassword("Daw1234!"), PDO::PARAM_STR);
+                    $querySQL->bindValue(':password', Validate::hashPassword("Daw1234!"), PDO::PARAM_STR);
                     $querySQL->bindValue(':age', 25, PDO::PARAM_INT);
                     $querySQL->bindValue(':type', "admin", PDO::PARAM_STR);
                     $querySQL->bindValue(':block', "unblock", PDO::PARAM_STR);
@@ -62,7 +64,7 @@
         */
         public static function createPerson(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $querySQL = $connection->prepare
                 ("INSERT INTO person (name, surname, email, password, age, type, block) VALUES
@@ -71,7 +73,7 @@
                 $querySQL->bindValue(':name', $_REQUEST["name"], PDO::PARAM_STR);
                 $querySQL->bindValue(':surname', $_REQUEST["surname"], PDO::PARAM_STR);
                 $querySQL->bindValue(':email', $_REQUEST["email"], PDO::PARAM_STR);
-                $querySQL->bindValue(':password', hashPassword($_REQUEST["password"]), PDO::PARAM_STR);
+                $querySQL->bindValue(':password', Validate::hashPassword($_REQUEST["password"]), PDO::PARAM_STR);
                 $querySQL->bindValue(':age', $_REQUEST["age"], PDO::PARAM_INT);
                 $querySQL->bindValue(':type', "user", PDO::PARAM_STR);
                 $querySQL->bindValue(':block', "unblock", PDO::PARAM_STR);
@@ -100,10 +102,10 @@
             * un mensaje de error en caso de que algo falle
         */
         public static function comprobePerson(){
-            $errors = require "./config/errors.php";
+            $errors = require "./static/constant/errors.php";
 
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $sql = "SELECT password FROM person WHERE email = :email";
 
@@ -119,7 +121,7 @@
 
                 if ($exist){
                     // Verificamos la contraseña
-                    $result = (verifyPassword($_REQUEST["password"], $values[0][0])) ? "" : $errors["errors"]["incorrectPassword"];
+                    $result = (Validate::verifyPassword($_REQUEST["password"], $values[0][0])) ? "" : $errors["errors"]["incorrectPassword"];
                 } else {
                     $result = $errors["errors"]["emailNoExists"];
                 }
@@ -144,7 +146,7 @@
         */
         public static function updatePerson(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $querySQL = $connection->prepare
                 ("UPDATE person SET name = :name, surname = :surname, email = :email, 
@@ -156,7 +158,7 @@
                 $querySQL->bindValue(':name', $_REQUEST["name"], PDO::PARAM_STR);
                 $querySQL->bindValue(':surname', $_REQUEST["surname"], PDO::PARAM_STR);
                 $querySQL->bindValue(':email', $_REQUEST["email"], PDO::PARAM_STR);
-                $querySQL->bindValue(':password', hashPassword($_REQUEST["password"]), PDO::PARAM_STR);
+                $querySQL->bindValue(':password', Validate::hashPassword($_REQUEST["password"]), PDO::PARAM_STR);
                 $querySQL->bindValue(':age', $_REQUEST["age"], PDO::PARAM_INT);
 
                 $type = (isset($_REQUEST["type"])) ? $_REQUEST["type"] : "user";
@@ -185,7 +187,7 @@
         */
         public static function deletePerson(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $sql = "DELETE FROM person WHERE id = :idUser";
 
@@ -216,7 +218,7 @@
         */
         public static function selectTypePerson(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $idUser = isset($_SESSION["idUser"]) ? $_SESSION["idUser"] : 0;
 
@@ -254,7 +256,7 @@
         */
         public static function selectBlockPerson(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $sql = "SELECT block FROM person WHERE email = :email";
 
@@ -286,7 +288,7 @@
         */
         public static function selectNamePerson($idUser){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $sql = "SELECT name FROM person WHERE id = :idUser";
 
@@ -313,7 +315,7 @@
         */
         public static function allEmailPerson(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $emailQuerySQL = "SELECT email FROM person";
 
@@ -342,7 +344,7 @@
         */
         public static function selectPerson($idUser){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $sql = "SELECT * FROM person WHERE id = :idUser";
 
@@ -371,7 +373,7 @@
         */
         public static function selectAllPerson(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $querySQL = "SELECT * FROM person";
                 $sentence = $connection->prepare($querySQL);
@@ -401,7 +403,7 @@
         */
         public static function selectIdPerson(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $sql = "SELECT id FROM person WHERE email = :email";
 

@@ -5,8 +5,7 @@
     "autoload": {
         "psr-4": {
             "Config\\" : "./config",
-            "Controllers\\" : "./controllers",
-            "Parts\\" : "./parts"
+            "Controllers\\" : "./controllers"
         }
     },
     "authors": [

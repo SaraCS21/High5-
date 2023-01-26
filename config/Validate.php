@@ -1,5 +1,9 @@
 <?php
 
+    namespace Config;
+
+    use Controllers\Person;
+
     class Validate {
         /**
             * Validación de email
@@ -12,7 +16,7 @@
             * @return string -> vacío en caso de que se cumpla y con un mensaje de error en caso de que no se cumpla
         */
         public static function validateEmail($email){
-            $errors = require "./config/errors.php";
+            $errors = require "./static/constant/errors.php";
 
             $result = (filter_var($email, FILTER_VALIDATE_EMAIL)) ? "" : $errors["errors"]["email"];
             return $result;
@@ -31,7 +35,7 @@
             * @return string -> vacío en caso de que se cumpla y con un mensaje de error en caso de que no se cumpla
         */
         public static function validatePassword($pass, $confirmPass){
-            $errors = require "./config/errors.php";
+            $errors = require "./static/constant/errors.php";
             $result = "";
 
             // Entre 8 y 16 caracteres. Mínimo una mayúscula, una minúscula, un número y un carácter especial.
@@ -59,7 +63,7 @@
             * @return string -> vacío en caso de que se cumpla y con un mensaje de error en caso de que no se cumpla
         */
         public static function comprobeInsert($keysInsert, $typeForm){
-            $errors = require "./config/errors.php";
+            $errors = require "./static/constant/errors.php";
 
             // Eliminamos el último elemento del array, el botón
             unset($_REQUEST[$typeForm]);
@@ -81,18 +85,18 @@
                         if ($typeForm === "register" && in_array($_REQUEST["email"], Person::allEmailPerson()[0])){
                             $result = $errors["errors"]["emailExists"];
 
-                        } else if (validateEmail($_REQUEST["email"]) !== ""){
-                            $result = validateEmail($_REQUEST["email"]);
+                        } else if (self::validateEmail($_REQUEST["email"]) !== ""){
+                            $result = self::validateEmail($_REQUEST["email"]);
 
-                        } else if (validatePassword($_REQUEST["password"], $_REQUEST["confirmPassword"]) !== ""){
-                            $result = validatePassword($_REQUEST["password"], $_REQUEST["confirmPassword"]);
+                        } else if (self::validatePassword($_REQUEST["password"], $_REQUEST["confirmPassword"]) !== ""){
+                            $result = self::validatePassword($_REQUEST["password"], $_REQUEST["confirmPassword"]);
                         } 
 
                     // En caso de estar en un formulario de login...
                     } else if ($typeForm === "login"){
 
-                        if (validateEmail($_REQUEST["email"]) !== ""){
-                            $result = validateEmail($_REQUEST["email"]);
+                        if (self::validateEmail($_REQUEST["email"]) !== ""){
+                            $result = self::validateEmail($_REQUEST["email"]);
 
                         } else if (Person::selectBlockPerson() === "block") {
                             $errors["errors"]["blockUser"];
@@ -119,66 +123,43 @@
             * 
             * @return string -> vacío en caso de que se cumpla y con un mensaje de error en caso de que no se cumpla
         */
-        function validate($typeForm, $keysInsert){
-            $errors = require "./config/errors.php";
+        public static function validate($typeForm, $keysInsert){
+            $errors = require "./static/constant/errors.php";
             $keys = array_keys($_REQUEST);
 
-            $result = in_array($typeForm, $keys) ? ((comprobeInsert($keysInsert, $typeForm) === "") ? "" : comprobeInsert($keysInsert, $typeForm)) : $errors["errors"]["inArray"];
+            $result = in_array($typeForm, $keys) ? ((self::comprobeInsert($keysInsert, $typeForm) === "") ? "" : self::comprobeInsert($keysInsert, $typeForm)) : $errors["errors"]["inArray"];
+            return $result;
+        }
+
+        /**
+            * Codificación de contraseña
+            *
+            * Esta función recibe una contraseña y la encripta usando el 
+            * algoritmo PASSWORD_BCRYPT
+            *
+            * @param string @password -> contraseña
+            *
+            * @return string -> contraseña encriptada
+        */
+        public static function hashPassword($password){
+            return password_hash($password, PASSWORD_BCRYPT);
+        }
+
+        /**
+            * Verificación de contraseña
+            *
+            * Esta función recibe una contraseña y la compara con la contraseña
+            * encriptada que tiene el mismo usuario en la Base de Datos
+            *
+            * @param string @password -> contraseña
+            * @param string @passwordHash -> contraseña encriptada
+            *
+            * @return boolean -> true en caso de que ambas contraseñas coincidan, false en caso contrario
+        */
+        public static function verifyPassword($password, $passwordHash){
+            $result = (password_verify($password, $passwordHash)) ? true : false;
             return $result;
         }
 
     }
-    
-    /**
-        * Debug de arrays
-        *
-        * Esta función recibe un array y devuelve una cadena de texto
-        * con los elementos de este
-        *
-        * @param array @array -> array que queramos comprobar
-    */
-    function debugArray($array){
-        foreach ($array as $key => $value) {
-            echo "$key - $value<br>";
-        }
-    }
-
-
-
-
-
-
-
-
-
-    /**
-        * Codificación de contraseña
-        *
-        * Esta función recibe una contraseña y la encripta usando el 
-        * algoritmo PASSWORD_BCRYPT
-        *
-        * @param string @password -> contraseña
-        *
-        * @return string -> contraseña encriptada
-    */
-    function hashPassword($password){
-        return password_hash($password, PASSWORD_BCRYPT);
-    }
-
-    /**
-        * Verificación de contraseña
-        *
-        * Esta función recibe una contraseña y la compara con la contraseña
-        * encriptada que tiene el mismo usuario en la Base de Datos
-        *
-        * @param string @password -> contraseña
-        * @param string @passwordHash -> contraseña encriptada
-        *
-        * @return boolean -> true en caso de que ambas contraseñas coincidan, false en caso contrario
-    */
-    function verifyPassword($password, $passwordHash){
-        $result = (password_verify($password, $passwordHash)) ? true : false;
-        return $result;
-    }
-
 ?>

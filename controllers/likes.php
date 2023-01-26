@@ -4,6 +4,7 @@
 
     use PDO;
     use PDOException;
+    use Config\ConnectDB;
 
     class Likes {
         /**
@@ -18,7 +19,7 @@
         */
         public static function countLikesPost($idPost){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $sql = "SELECT * FROM likes WHERE idPost = :idPost";
 
@@ -45,7 +46,7 @@
         */
         public static function getLikesPost($idPost){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $sql = "SELECT idUser FROM likes WHERE idPost = :idPost";
 
@@ -74,7 +75,7 @@
         */
         public static function setLike(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $querySQL = $connection->prepare
                 ("INSERT INTO likes (idUser, idPost) VALUES
@@ -103,7 +104,7 @@
         */
         public static function deleteLike(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $querySQL = $connection->prepare
                 ("DELETE FROM likes WHERE idUser = :idUser AND idPost = :idPost");

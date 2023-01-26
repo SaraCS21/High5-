@@ -27,7 +27,7 @@
         * @return string -> vacío en caso de que se cumpla y con un mensaje de error en caso de que no se cumpla
     */
     function validateEmail($email){
-        $errors = require "./config/errors.php";
+        $errors = require "./static/constant/errors.php";
 
         $result = (filter_var($email, FILTER_VALIDATE_EMAIL)) ? "" : $errors["errors"]["email"];
         return $result;
@@ -46,7 +46,7 @@
         * @return string -> vacío en caso de que se cumpla y con un mensaje de error en caso de que no se cumpla
     */
     function validatePassword($pass, $confirmPass){
-        $errors = require "./config/errors.php";
+        $errors = require "./static/constant/errors.php";
         $result = "";
 
         // Entre 8 y 16 caracteres. Mínimo una mayúscula, una minúscula, un número y un carácter especial.
@@ -74,7 +74,7 @@
         * @return string -> vacío en caso de que se cumpla y con un mensaje de error en caso de que no se cumpla
     */
     function comprobeInsert($keysInsert, $typeForm){
-        $errors = require "./config/errors.php";
+        $errors = require "./static/constant/errors.php";
 
         // Eliminamos el último elemento del array, el botón
         unset($_REQUEST[$typeForm]);
@@ -135,7 +135,7 @@
         * @return string -> vacío en caso de que se cumpla y con un mensaje de error en caso de que no se cumpla
     */
     function validate($typeForm, $keysInsert){
-        $errors = require "./config/errors.php";
+        $errors = require "./static/constant/errors.php";
         $keys = array_keys($_REQUEST);
 
         $result = in_array($typeForm, $keys) ? ((comprobeInsert($keysInsert, $typeForm) === "") ? "" : comprobeInsert($keysInsert, $typeForm)) : $errors["errors"]["inArray"];

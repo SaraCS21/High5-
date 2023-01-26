@@ -1,19 +1,20 @@
 <?php
     use Controllers\Person;
+    use Config\Validate;
 ?>
 
 <section>
     <div class="container-fluid h-custom d-flex flex-wrap justify-content-center" style="margin-top:8rem;">
 
     <?php
-        $errors = require "./config/errors.php";
+        $errors = require "./static/constant/errors.php";
 
         // En caso de darle al botón de loguearnos...
         if(isset($_REQUEST["login"])){
 
             // Las claves de nuestro formulario
             $keysInsert = ["email", "password", "url"];
-            $validate = validate("login", $keysInsert);
+            $validate = Validate::validate("login", $keysInsert);
 
             // Validamos los datos...
             if ($validate === ""){

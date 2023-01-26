@@ -4,6 +4,7 @@
 
     use PDO;
     use PDOException;
+    use Config\ConnectDB;
 
     class Coment {
 
@@ -21,7 +22,7 @@
         */
         public static function createComent(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $querySQL = $connection->prepare
                 ("INSERT INTO coment (idUser, idPost, content, publicationDate) VALUES
@@ -52,7 +53,7 @@
         public static function updateComent(){
             try {
 
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $querySQL = $connection->prepare
                 ("UPDATE coment SET content = :content, idPost = :idPost,
@@ -83,7 +84,7 @@
         */
         public static function deleteComent(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $sql = "DELETE FROM coment WHERE id = :idComent";
 
@@ -109,7 +110,7 @@
         */
         public static function selectComentPost($idPost){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $sql = "SELECT * FROM coment WHERE idPost = :idPost";
 
@@ -138,7 +139,7 @@
         */
         public static function contComents($idPost){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $sql = "SELECT * FROM coment WHERE idPost = :idPost";
 

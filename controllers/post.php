@@ -4,6 +4,7 @@
 
     use PDO;
     use PDOException;
+    use Config\ConnectDB;
 
     class Post {
 
@@ -18,7 +19,7 @@
         */
         public static function createDefaultPost(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $querySQL = "SELECT * FROM post";
                 $sentenceQuery = $connection->prepare($querySQL);
@@ -65,7 +66,7 @@
         */
         public static function createPost(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $querySQL = $connection->prepare
                 ("INSERT INTO post (content, title, theme, publicationDate, idUser, numViews) VALUES
@@ -97,7 +98,7 @@
         */
         public static function updatePost(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $querySQL = $connection->prepare
                 ("UPDATE post SET content = :content, title = :title,
@@ -129,7 +130,7 @@
         */
         public static function deletePost(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $sql = "DELETE FROM post WHERE id = :idPost";
 
@@ -158,7 +159,7 @@
         */
         public static function selectPost($idPost){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $sql = "SELECT * FROM post WHERE id = :idPost";
 
@@ -187,7 +188,7 @@
         */
         public static function selectAllPost(){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $querySQL = "SELECT * FROM post";
                 $sentence = $connection->prepare($querySQL);
@@ -216,7 +217,7 @@
         */
         public static function getViews($idPost){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
 
                 $sql = "SELECT numViews FROM post WHERE id = :idPost";
 
@@ -245,7 +246,7 @@
         */
         public static function incrementViews($idPost){
             try {
-                $connection = connect();
+                $connection = ConnectDB::connect();
     
                 $querySQL = $connection->prepare
                 ("UPDATE post SET numViews = :numViews  WHERE id = :idPost");

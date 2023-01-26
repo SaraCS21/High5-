@@ -8,9 +8,6 @@
     
     require "./vendor/autoload.php";
 
-    require "./config/functions.php";
-    require "./config/create.php";
-
     use Controllers\Person;
 
     // En caso de que queramos movernos a la página principal...

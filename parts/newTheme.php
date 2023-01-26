@@ -1,5 +1,6 @@
 <?php   
     use Controllers\Post;
+    use Config\Validate;
 ?>
 
 <section>
@@ -20,7 +21,7 @@
 
             // Las claves de nuestro formulario
             $keysInsert = ["title", "theme", "content", "url"];
-            $validate = validate("createTheme", $keysInsert);
+            $validate = Validate::validate("createTheme", $keysInsert);
 
             // Validamos los datos...
             if ($validate === ""){

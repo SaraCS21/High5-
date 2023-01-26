@@ -1,10 +1,11 @@
 <?php
-    $errors = require "./config/errors.php";
+    $errors = require "./static/constant/errors.php";
 
     use Controllers\Post;
     use Controllers\Likes;
     use Controllers\Coment;
     use Controllers\Person;
+    use Config\Validate;
 
     // En caso de no tener una sesión iniciada...
     if ($_SESSION["idUser"] === 0){
@@ -36,7 +37,7 @@
         $keysInsert = ["idPost", "content", "url"];
 
         // Validamos los datos...
-        if (validate("send", $keysInsert) === ""){
+        if (Validate::validate("send", $keysInsert) === ""){
             // Creamos el nuevo comentario
             Coment::createComent();
         } 

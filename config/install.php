@@ -2,10 +2,11 @@
 
     use Controllers\Person;
     use Controllers\Post;
+    use Config\ConnectDB;
 
     // Instalación de la Base de Datos
     try{
-        $connection = create();
+        $connection = ConnectDB::create();
         $sql = file_get_contents("./static/database/db.sql");
         $connection->exec($sql);
 

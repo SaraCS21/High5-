@@ -1,5 +1,6 @@
 <?php
     use Controllers\Person;
+    use Config\Validate;
 ?>
 
 <section>
@@ -26,7 +27,7 @@
 
             // Las claves de nuestro formulario
             $keysInsert = ["name", "surname", "email", "password", "confirmPassword", "age", "url", "type"];
-            $validate = validate("update", $keysInsert);
+            $validate = Validate::validate("update", $keysInsert);
 
             // Validamos los datos...
             if ($validate === "" && $_REQUEST["password"] !== "" && $_REQUEST["confirmPassword"] !== ""){
