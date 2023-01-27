@@ -9,7 +9,7 @@
     /**
          * Clase encargada de controlar los likes
          * 
-         * Se encarga de controlar todo lo referido al CRUD 
+         * Se encarga de controlar lo referido al CRUD 
          * de los likes dentro de la Base de Datos
      */
     class Likes {

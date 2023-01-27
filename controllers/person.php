@@ -10,7 +10,7 @@
     /**
          * Clase encargada de controlar las personas
          * 
-         * Se encarga de controlar todo lo referido al CRUD 
+         * Se encarga de controlar lo referido al CRUD 
          * de las personas dentro de la Base de Datos
      */
     class Person {
@@ -103,7 +103,7 @@
             *
             * @global $_REQUEST
             *
-            * @return string $result -> vacío en caso de que todo esté correcto, 
+            * @return string $result -> vacío en caso de que esté correcto, 
             * un mensaje de error en caso de que algo falle
         */
         public static function comprobePerson(){

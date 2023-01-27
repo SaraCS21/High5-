@@ -14,7 +14,7 @@
     /**
          * Clase encargada de conectarse a la Base de Datos
          * 
-         * Se encarga de controlar todo lo referido a las conexiones
+         * Se encarga de controlar lo referido a las conexiones
          * con la Base de Datos y la instalación de esta
      */
     class ConnectDB {

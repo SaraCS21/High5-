@@ -1,7 +1,7 @@
 const show = document.querySelector("#showPassword");
 const input = document.querySelector("#inputShowPassword");
 
-show.addEventListener("click", e => {
+show.addEventListener("click", () => {
     const i = show.querySelector("i");
 
     if (i.className === "bx bx-show-alt"){
@@ -19,7 +19,7 @@ show.addEventListener("click", e => {
 const showConfirm = document.querySelector("#showConfirmPassword");
 const inputConfirm = document.querySelector("#inputShowConfirmPassword");
 
-showConfirm.addEventListener("click", e => {
+showConfirm.addEventListener("click" , () => {
     const i = showConfirm.querySelector("i");
 
     if (i.className === "bx bx-show-alt"){

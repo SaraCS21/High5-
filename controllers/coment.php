@@ -9,7 +9,7 @@
     /**
          * Clase encargada de controlar los comentarios
          * 
-         * Se encarga de controlar todo lo referido al CRUD 
+         * Se encarga de controlar lo referido al CRUD 
          * de los comentarios dentro de la Base de Datos
      */
     class Coment {
