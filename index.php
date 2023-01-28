@@ -21,9 +21,10 @@
     if (!isset($_REQUEST["url"]) || !isset($_SESSION["idUser"])){
         SelectPage::selectPage();
 
-    // En caso de tener una url a la que movernos...
+    // En caso de tener una url a la que movernos o que ingresemos una url que no existe...
     } else {
-        require $routes["routes"][$_REQUEST["url"]];
+
+        require array_key_exists($_REQUEST["url"], $routes["routes"]) ? $routes["routes"][$_REQUEST["url"]] : $routes["routes"]["landing"] ; 
     }
 ?>
 

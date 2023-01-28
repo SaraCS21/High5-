@@ -1,6 +1,8 @@
 <?php
 
     namespace Config;
+    
+    use Controllers\Person;
 
     /**
          * Clase encargada de devolver la url correspondiente
@@ -21,19 +23,36 @@
             * @global $_SESSION
         */
         public static function selectPage(){
+            // // En caso de que no exista un usuario con sesión iniciada...
+            // if (!isset($_SESSION["idUser"]) || $_SESSION["idUser"] === 0){
+            //     $url = "login";
+            //     $_SESSION["idUser"] = 0;
+
+            // // En caso de tener un usuario administrador
+            // } else if (Person::selectTypePerson() === "admin" ) {
+            //     $url = "adminPanel";
+
+            // // En caso de tener un usuario normal
+            // } else {
+            //     $url = "landing";
+            // }
+
             // En caso de que no exista un usuario con sesión iniciada...
-            if (!isset($_SESSION["idUser"]) || $_SESSION["idUser"] === 0){
-                $url = "login";
-                $_SESSION["idUser"] = 0;
+            
+            if (Person::selectTypePerson() === "user" && isset($_SESSION["idUser"])){
+                $url = "landing";
 
             // En caso de tener un usuario administrador
-            } else if ($_SESSION["idUser"] === 1) {
+            } else if (Person::selectTypePerson() === "admin" && isset($_SESSION["idUser"])) {
                 $url = "adminPanel";
 
             // En caso de tener un usuario normal
             } else {
-                $url = "landing";
+                $url = "login";
+                $_SESSION["idUser"] = 0;
             }
+
+
             // Modificamos la url a la que nos vamos a dirigir
             Header("Location: ./index.php?url=$url");
         }

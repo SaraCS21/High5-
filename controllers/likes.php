@@ -5,6 +5,7 @@
     use PDO;
     use PDOException;
     use Config\ConnectDB;
+    use Config\Validate;
 
     /**
          * Clase encargada de controlar los likes
@@ -30,7 +31,7 @@
                 $sql = "SELECT * FROM likes WHERE idPost = :idPost";
 
                 $querySQL = $connection->prepare($sql);
-                $querySQL->bindValue(':idPost', $idPost, PDO::PARAM_INT);
+                $querySQL->bindValue(':idPost', Validate::sanitize($idPost), PDO::PARAM_INT);
                 $querySQL->execute();
                 
                 return $querySQL->rowCount();
@@ -57,7 +58,7 @@
                 $sql = "SELECT idUser FROM likes WHERE idPost = :idPost";
 
                 $querySQL = $connection->prepare($sql);
-                $querySQL->bindValue(':idPost', $idPost, PDO::PARAM_INT);
+                $querySQL->bindValue(':idPost', Validate::sanitize($idPost), PDO::PARAM_INT);
                 $querySQL->execute();
                 
                 $likes = $querySQL->fetchAll(PDO::FETCH_ASSOC);
@@ -87,8 +88,8 @@
                 ("INSERT INTO likes (idUser, idPost) VALUES
                 (:idUser, :idPost)");
 
-                $querySQL->bindValue(':idUser', $_SESSION["idUser"], PDO::PARAM_INT);
-                $querySQL->bindValue(':idPost', $_REQUEST["idPost"], PDO::PARAM_INT);
+                $querySQL->bindValue(':idUser', Validate::sanitize($_SESSION["idUser"]), PDO::PARAM_INT);
+                $querySQL->bindValue(':idPost', Validate::sanitize($_REQUEST["idPost"]), PDO::PARAM_INT);
 
                 $querySQL->execute();
 
@@ -115,8 +116,8 @@
                 $querySQL = $connection->prepare
                 ("DELETE FROM likes WHERE idUser = :idUser AND idPost = :idPost");
 
-                $querySQL->bindValue(':idUser', $_SESSION["idUser"], PDO::PARAM_INT);
-                $querySQL->bindValue(':idPost', $_REQUEST["idPost"], PDO::PARAM_INT);
+                $querySQL->bindValue(':idUser', Validate::sanitize($_SESSION["idUser"]), PDO::PARAM_INT);
+                $querySQL->bindValue(':idPost', Validate::sanitize($_REQUEST["idPost"]), PDO::PARAM_INT);
 
                 $querySQL->execute();
 

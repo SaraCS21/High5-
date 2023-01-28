@@ -2,6 +2,60 @@
     height: calc(100% - 73px);
 }
 
+.height{
+    height: 30vh;
+}
+
+.form{
+    position: relative;
+}
+
+.form .bx-search{
+    position: absolute;
+    top:20px;
+    left: 20px;
+
+    color: #9ca3af;
+
+}
+
+.form span{
+    position: absolute;
+    right: 17px;
+    top: 13px;
+
+    padding: 2px;
+    border-left: 1px solid #d1d5db;
+
+}
+
+.left-pan{
+    padding-left: 7px;
+}
+
+.left-pan i{
+    padding-left: 10px;
+}
+
+.form-input{
+    height: 55px;
+
+    text-indent: 33px;
+
+    border-radius: 10px;
+}
+
+.form-input:focus{
+    box-shadow: none;
+}
+
+#about{
+    background-color: #9ca3af;
+    background-image: url("../img/bg.jpg");
+    background-size: cover;
+}
+
+
 @media (max-width: 450px) {
     .h-custom {
         height: 100%;

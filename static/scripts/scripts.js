@@ -33,3 +33,9 @@ showConfirm.addEventListener("click" , () => {
     }
 
 })
+
+const filter = document.querySelector("#filter");
+
+function actPage(){
+    alert(filter.selectedIndex);
+}

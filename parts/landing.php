@@ -21,21 +21,26 @@
         Header("Location: ./index.php?url=newTheme");
     } 
 
-    // Seleccionamos todos los post de nuestra Base de Datos
-    $posts = Post::selectAllPost();
+    // En caso de querer filtar los post
+    if (isset($_REQUEST["filter"])){
+        $posts = Post::filterPost();
+        
+    } else {
+        // Seleccionamos todos los post de nuestra Base de Datos
+        $posts = Post::selectAllPost();
+    }
 ?>
 
 <section id="about" class="p-4">
-    <div class="container px-4">
-        <div class="row gx-4 justify-content-center">
-            <div class="col-lg-8">
-                <h2>Sobre nosotros</h2>
-                <p class="lead">Bienvenido a high5! Aquí podrás encontrar un montón de espacios donde poder hablar con otras personas sobre lo que quieras.</p>
-                <ul>
-                    <li>Podrás encontrar a miles de personas con tus mismos gustos.</li>
-                    <li>Infórmate sobre aquello que más te apasione.</li>
-                    <li>Debate y pon en común ideas con el resto de la comunidad.</li>
-                </ul>
+    <div class="container">
+        <div class="row height d-flex justify-content-center align-items-center">
+            <div class="col-md-6">
+                <h2 class="pb-5 text-center fs-1">High5!</h2>
+                <div class="form">
+                    <i class='bx bx-search'></i>
+                    <input type="text" class="form-control form-input" placeholder="Search anything...">
+                    <span class="left-pan"><i class='bx bx-microphone'></i></span>
+                </div>
             </div>
         </div>
     </div>
@@ -45,12 +50,24 @@
     <div class="container px-4">
         <div class="row gx-4 justify-content-center">
             <div class="col-lg-8">
+                <div class="d-flex align-items-center mt-3 pb-3">
+                    <select id="filter" class="w-25 form-select form-select-sm" onChange=location.href="./index.php?url=landing&filter="+this.value>
+                        <option value="all" selected>Filtrar por...</option>
+                        <option value="topViews">Más vistos</option>
+                        <option value="lessViews">Menos vistos</option>
+                        <option value="topLikes">Con más likes</option>
+                        <option value="lessLikes">Con menos likes</option>
+                        <option value="topComents">Más comentados</option>
+                        <option value="lessComents">Menos comentados</option>
+                    </select>
+                </div>
+
                 <div class="d-flex justify-content-between mt-3">                
-                    <h2>Temas</h2>
-                    <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                    <h2>Posts</h2>
+                    <form method="post" action="<?= $_SERVER['PHP_SELF']; ?>">
                         <!-- Url a la que iremos cuando se recargue la página -->
                         <input type="hidden" name="url" value="newTheme">
-                        <button type="submit" name="newTheme" class="btn btn-secondary">Crea un nuevo debate</button>
+                        <button type="submit" name="newTheme" class="btn btn-secondary">Crea un nuevo post</button>
                     </form>
                 </div>
                 <hr>

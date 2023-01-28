@@ -75,11 +75,11 @@
                 ("INSERT INTO person (name, surname, email, password, age, type, block) VALUES
                 (:name, :surname, :email, :password, :age, :type, :block)");
 
-                $querySQL->bindValue(':name', $_REQUEST["name"], PDO::PARAM_STR);
-                $querySQL->bindValue(':surname', $_REQUEST["surname"], PDO::PARAM_STR);
-                $querySQL->bindValue(':email', $_REQUEST["email"], PDO::PARAM_STR);
-                $querySQL->bindValue(':password', Validate::hashPassword($_REQUEST["password"]), PDO::PARAM_STR);
-                $querySQL->bindValue(':age', $_REQUEST["age"], PDO::PARAM_INT);
+                $querySQL->bindValue(':name', Validate::sanitize($_REQUEST["name"]), PDO::PARAM_STR);
+                $querySQL->bindValue(':surname', Validate::sanitize($_REQUEST["surname"]), PDO::PARAM_STR);
+                $querySQL->bindValue(':email', Validate::sanitize($_REQUEST["email"]), PDO::PARAM_STR);
+                $querySQL->bindValue(':password', Validate::hashPassword(Validate::sanitize($_REQUEST["password"])), PDO::PARAM_STR);
+                $querySQL->bindValue(':age', Validate::sanitize($_REQUEST["age"]), PDO::PARAM_INT);
                 $querySQL->bindValue(':type', "user", PDO::PARAM_STR);
                 $querySQL->bindValue(':block', "unblock", PDO::PARAM_STR);
 
@@ -115,7 +115,7 @@
                 $sql = "SELECT password FROM person WHERE email = :email";
 
                 $querySQL = $connection->prepare($sql);
-                $querySQL->bindValue(':email', $_REQUEST['email'], PDO::PARAM_STR);
+                $querySQL->bindValue(':email', Validate::sanitize($_REQUEST['email']), PDO::PARAM_STR);
                 $querySQL->execute();
 
                 $values = $querySQL->fetchAll();
@@ -126,7 +126,7 @@
 
                 if ($exist){
                     // Verificamos la contraseña
-                    $result = (Validate::verifyPassword($_REQUEST["password"], $values[0][0])) ? "" : $errors["errors"]["incorrectPassword"];
+                    $result = (Validate::verifyPassword(Validate::sanitize($_REQUEST["password"]), $values[0][0])) ? "" : $errors["errors"]["incorrectPassword"];
                 } else {
                     $result = $errors["errors"]["emailNoExists"];
                 }
@@ -158,21 +158,21 @@
                 password = :password, age = :age, type = :type, block = :block WHERE id = :idUser");
 
                 $idUser = (isset($_REQUEST["editUser"])) ? $_REQUEST["editUser"] : $_SESSION["idUser"];
-                $querySQL->bindValue(':idUser', $idUser, PDO::PARAM_INT);
+                $querySQL->bindValue(':idUser', Validate::sanitize($idUser), PDO::PARAM_INT);
 
-                $querySQL->bindValue(':name', $_REQUEST["name"], PDO::PARAM_STR);
-                $querySQL->bindValue(':surname', $_REQUEST["surname"], PDO::PARAM_STR);
-                $querySQL->bindValue(':email', $_REQUEST["email"], PDO::PARAM_STR);
+                $querySQL->bindValue(':name', Validate::sanitize($_REQUEST["name"]), PDO::PARAM_STR);
+                $querySQL->bindValue(':surname', Validate::sanitize($_REQUEST["surname"]), PDO::PARAM_STR);
+                $querySQL->bindValue(':email', Validate::sanitize($_REQUEST["email"]), PDO::PARAM_STR);
 
                 $password = $_REQUEST["updatePerson"] ? $_REQUEST["password"] : Validate::hashPassword($_REQUEST["password"]);
-                $querySQL->bindValue(':password', $password, PDO::PARAM_STR);
-                $querySQL->bindValue(':age', $_REQUEST["age"], PDO::PARAM_INT);
+                $querySQL->bindValue(':password', Validate::sanitize($password), PDO::PARAM_STR);
+                $querySQL->bindValue(':age', Validate::sanitize($_REQUEST["age"]), PDO::PARAM_INT);
 
                 $type = (isset($_REQUEST["type"])) ? $_REQUEST["type"] : "user";
-                $querySQL->bindValue(':type', $type, PDO::PARAM_STR);
+                $querySQL->bindValue(':type', Validate::sanitize($type), PDO::PARAM_STR);
 
                 $block = (isset($_REQUEST["block"])) ? $_REQUEST["block"] : "unblock";
-                $querySQL->bindValue(':block', $block, PDO::PARAM_STR);
+                $querySQL->bindValue(':block', Validate::sanitize($block), PDO::PARAM_STR);
 
                 $querySQL->execute();
 
@@ -201,7 +201,7 @@
                 $querySQL = $connection->prepare($sql);
 
                 $idUser = (isset($_REQUEST["deleteUser"])) ? $_REQUEST["deleteUser"] : $_SESSION["idUser"];
-                $querySQL->bindValue(':idUser', $idUser, PDO::PARAM_INT);
+                $querySQL->bindValue(':idUser', Validate::sanitize($idUser), PDO::PARAM_INT);
 
                 $querySQL->execute();
 
@@ -232,7 +232,7 @@
                 $sql = "SELECT type FROM person WHERE id = :idUser";
 
                 $querySQL = $connection->prepare($sql);
-                $querySQL->bindValue(':idUser', $idUser, PDO::PARAM_INT);
+                $querySQL->bindValue(':idUser', Validate::sanitize($idUser), PDO::PARAM_INT);
 
                 $querySQL->execute();
 
@@ -269,7 +269,7 @@
 
                 $querySQL = $connection->prepare($sql);
                 $email = isset($_REQUEST["email"]) ? $_REQUEST["email"] : $email;
-                $querySQL->bindValue(':email', $email, PDO::PARAM_STR);
+                $querySQL->bindValue(':email', Validate::sanitize($email), PDO::PARAM_STR);
 
                 $querySQL->execute();
                 $userValues = $querySQL->fetchAll();
@@ -301,7 +301,7 @@
                 $sql = "SELECT name FROM person WHERE id = :idUser";
 
                 $querySQL = $connection->prepare($sql);
-                $querySQL->bindValue(':idUser', $idUser, PDO::PARAM_INT);
+                $querySQL->bindValue(':idUser', Validate::sanitize($idUser), PDO::PARAM_INT);
 
                 $querySQL->execute();
                 $name = $querySQL->fetchAll();
@@ -332,7 +332,7 @@
                 $sql = "SELECT email FROM person WHERE id = :idUser";
 
                 $querySQL = $connection->prepare($sql);
-                $querySQL->bindValue(':idUser', $_SESSION["idUser"], PDO::PARAM_INT);
+                $querySQL->bindValue(':idUser', Validate::sanitize($_SESSION["idUser"]), PDO::PARAM_INT);
 
                 $querySQL->execute();
                 $email = $querySQL->fetchAll();
@@ -388,7 +388,7 @@
                 $sql = "SELECT * FROM person WHERE id = :idUser";
 
                 $querySQL = $connection->prepare($sql);
-                $querySQL->bindValue(':idUser', $idUser, PDO::PARAM_INT);
+                $querySQL->bindValue(':idUser', Validate::sanitize($idUser), PDO::PARAM_INT);
 
                 $querySQL->execute();
 
@@ -447,7 +447,7 @@
                 $sql = "SELECT id FROM person WHERE email = :email";
 
                 $querySQL = $connection->prepare($sql);
-                $querySQL->bindValue(':email', $_REQUEST["email"], PDO::PARAM_STR);
+                $querySQL->bindValue(':email', Validate::sanitize($_REQUEST["email"]), PDO::PARAM_STR);
 
                 $querySQL->execute();
                 $id = $querySQL->fetchAll();

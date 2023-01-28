@@ -5,6 +5,7 @@
     use PDO;
     use PDOException;
     use Config\ConnectDB;
+    use Config\Validate;
 
     /**
          * Clase encargada de controlar los comentarios
@@ -34,8 +35,8 @@
                 (:idUser, :idPost, :content, :publicationDate)");
 
                 $querySQL->bindValue(':idUser', $_SESSION["idUser"], PDO::PARAM_INT);
-                $querySQL->bindValue(':idPost', $_REQUEST["idPost"], PDO::PARAM_INT);
-                $querySQL->bindValue(':content', $_REQUEST["content"], PDO::PARAM_STR);
+                $querySQL->bindValue(':idPost', Validate::sanitize($_REQUEST["idPost"]), PDO::PARAM_INT);
+                $querySQL->bindValue(':content', Validate::sanitize($_REQUEST["content"]), PDO::PARAM_STR);
                 $querySQL->bindValue(':publicationDate', date('Y-m-d'), PDO::PARAM_STR); // Fecha actual
 
                 $querySQL->execute();
@@ -64,11 +65,11 @@
                 ("UPDATE coment SET content = :content, idPost = :idPost,
                 publicationDate = :publicationDate, idUser = :idUser WHERE id = :idComent");
 
-                $querySQL->bindValue(':idComent', $_REQUEST["id"], PDO::PARAM_INT);
-                $querySQL->bindValue(':content', $_REQUEST["content"], PDO::PARAM_STR);
-                $querySQL->bindValue(':publicationDate', $_REQUEST["publicationDate"], PDO::PARAM_STR);
-                $querySQL->bindValue(':idPost', $_REQUEST["idPost"], PDO::PARAM_INT);
-                $querySQL->bindValue(':idUser', $_REQUEST["idUser"], PDO::PARAM_INT);
+                $querySQL->bindValue(':idComent', Validate::sanitize($_REQUEST["id"]), PDO::PARAM_INT);
+                $querySQL->bindValue(':content', Validate::sanitize($_REQUEST["content"]), PDO::PARAM_STR);
+                $querySQL->bindValue(':publicationDate', Validate::sanitize($_REQUEST["publicationDate"]), PDO::PARAM_STR);
+                $querySQL->bindValue(':idPost', Validate::sanitize($_REQUEST["idPost"]), PDO::PARAM_INT);
+                $querySQL->bindValue(':idUser', Validate::sanitize($_REQUEST["idUser"]), PDO::PARAM_INT);
 
                 $querySQL->execute();
 
@@ -94,7 +95,7 @@
                 $sql = "DELETE FROM coment WHERE id = :idComent";
 
                 $querySQL = $connection->prepare($sql);
-                $querySQL->bindValue(':idComent', $_REQUEST["id"], PDO::PARAM_INT);
+                $querySQL->bindValue(':idComent', Validate::sanitize($_REQUEST["id"]), PDO::PARAM_INT);
 
                 $querySQL->execute();
 

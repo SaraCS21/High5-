@@ -1,29 +1,39 @@
-<?php
-
-    use Controllers\Post;
-    use Controllers\Person;
-
-    if (Person::selectTypePerson() !== "admin"){
-        Header("Location: ./index.php?url=landing");
-    }
-
-    $values = Post::selectPost($_REQUEST["idPost"])[0];
-    $idPost = $_REQUEST["idPost"];
-
-    if (isset($_REQUEST["updatePost"])){
-        // Validamos los datos...
-        if (!empty($_REQUEST["content"]) && !empty($_REQUEST["title"]) && !empty($_REQUEST["theme"])){
-            // Editamos el post
-            Post::updatePost();
-            Header("Location: ./index.php?url=updatePost&idPost=$idPost");
-        }         
-    } else if (isset($_REQUEST["goBack"])){
-        Header("Location: ./index.php?url=adminPanel&postInfo=");
-    }
-?>
-
 <div class="w-100 row d-flex justify-content-center align-items-center mt-5">
     <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        
+        <?php
+
+            use Controllers\Post;
+            use Controllers\Person;
+
+            $errors = require "./static/constant/errors.php";
+
+            if (Person::selectTypePerson() !== "admin"){
+                Header("Location: ./index.php?url=landing");
+            }
+
+            $values = Post::selectPost($_REQUEST["idPost"])[0];
+            $idPost = $_REQUEST["idPost"];
+
+            if (isset($_REQUEST["updatePost"])){
+                // Validamos los datos...
+                if (!empty($_REQUEST["content"]) && !empty($_REQUEST["title"]) && !empty($_REQUEST["theme"])){
+                    // Editamos el post
+                    Post::updatePost();
+                    Header("Location: ./index.php?url=updatePost&idPost=$idPost");
+
+                } else {
+
+        ?>
+
+        <div class="w-100 alert alert-danger" role="alert"><?= $errors["errors"]["empty"] ?></div>
+
+        <?php
+                }         
+            } else if (isset($_REQUEST["goBack"])){
+                Header("Location: ./index.php?url=adminPanel&postInfo=");
+            }
+        ?>
 
         <form method="post" action=<?= "index.php?url=updatePost&idPost=$idPost" ?>>
             <h2 class="text-center mt-5 mb-4">Actualizar datos del Post</h2>

@@ -25,11 +25,6 @@
         }
 
         if(isset($_REQUEST["createTheme"])){
-            $result = [
-                "error" => false,
-                "mensaje" => "El post ha sido agregado con éxito"
-            ];
-
             // Las claves de nuestro formulario
             $keysInsert = ["title", "theme", "content", "url"];
             $validate = Validate::validate("createTheme", $keysInsert);
@@ -51,7 +46,7 @@
 
         <div class="w-100 row d-flex justify-content-center align-items-center mt-5">
             <div class="col-md-8 col-lg-6 col-xl-4">
-                <h2 class="mb-5 text-center">Crea un nuevo espacio del que hablar</h2>
+                <h2 class="mb-5 text-center">Crea un nuevo post del que hablar</h2>
                 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="position-relative">
                     <button type="submit" name="goBack" class="position-absolute border-0 bg-white" style="right:40rem;bottom:18.5rem;">
                         <i class='bx bx-chevron-left fs-2'></i>

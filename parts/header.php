@@ -62,11 +62,13 @@
                         <i class='bx bxs-cog fs-3 text-dark'></i>                
                     </button>
 
-                    <?php } ?>
+                    <?php } if (isset($_SESSION["idUser"]) && $_SESSION["idUser"] !== 0 ){ ?>
 
                     <button type="submit" class="d-flex align-items-center border-0 bg-light" name="userConfig" aria-expanded="false">
                         <i class='bx bxs-user-circle fs-3 text-dark'></i>                
                     </button>
+
+                    <?php } ?>
 
                 </div>
 

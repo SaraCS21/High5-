@@ -58,7 +58,7 @@
         // Validamos los datos...
         if (!empty($_REQUEST["content"]) && !empty($_REQUEST["title"]) && !empty($_REQUEST["theme"])){
             Post::updatePost();
-            Header("Location: ./index.php?url=landing");
+            Header("Location: ./index.php?url=post&idPost=$id");
 
         } else {
             $continueEdit = false;
@@ -69,6 +69,7 @@
         // Validamos los datos...
         if (!empty($_REQUEST["content"])){
             Coment::updateComent();
+            Header("Location: ./index.php?url=post&idPost=$id");
 
         } else {
             $continueEditComent = false;
@@ -76,7 +77,8 @@
 
     // En caso de que queramos eliminar un comentario...
     } else if (isset($_REQUEST["deleteComent"])){
-        Coment::deleteComent();
+        // Coment::deleteComent();
+        // Header("Location: ./index.php?url=post&idPost=$id");
 
     // En caso de que queramos dar like a un post...
     } else if (isset($_REQUEST["like"])){
@@ -149,7 +151,7 @@
                                     <div>
 
                                         <!-- Si el usuario con sesión activa es un administrador o el creador del post podremos eliminar -->
-                                        <?php if ($_SESSION["idUser"] === 1 || $_SESSION["idUser"] === $row["idUser"]){ ?>
+                                        <?php if (Person::selectTypePerson() === "admin" || $_SESSION["idUser"] === $row["idUser"]){ ?>
                                 
                                         <button class="border-0 bg-white" type="submit" name="delete" value="<?= $row["id"] ?>">
                                             
@@ -301,8 +303,8 @@
 
                         <div class="w-100 d-flex justify-content-end">
                             <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                                <!-- Si el usuario con sesión activa es un administrador o el creador del post podremos eliminar -->
-                                <?php if ($_SESSION["idUser"] === 1 || $_SESSION["idUser"] === $value["idUser"]){ ?>
+                                <!-- Si el usuario con sesión activa es el creador del post podremos eliminar -->
+                                <?php if ($_SESSION["idUser"] === $value["idUser"]){ ?>
                                     
                                 <button class="border-0 bg-light" type="submit" name="delete" value="<?= $value["id"] ?>">
                                     

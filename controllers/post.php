@@ -5,6 +5,7 @@
     use PDO;
     use PDOException;
     use Config\ConnectDB;
+    use Config\Validate;
 
     /**
          * Clase encargada de controlar los posts
@@ -77,9 +78,9 @@
                 ("INSERT INTO post (content, title, theme, publicationDate, idUser, numViews) VALUES
                 (:content, :title, :theme, :publicationDate, :idUser, :numViews)");
 
-                $querySQL->bindValue(':content', $_REQUEST["content"], PDO::PARAM_STR);
-                $querySQL->bindValue(':title', $_REQUEST["title"], PDO::PARAM_STR);
-                $querySQL->bindValue(':theme', $_REQUEST["theme"], PDO::PARAM_STR);
+                $querySQL->bindValue(':content', Validate::sanitize($_REQUEST["content"]), PDO::PARAM_STR);
+                $querySQL->bindValue(':title', Validate::sanitize($_REQUEST["title"]), PDO::PARAM_STR);
+                $querySQL->bindValue(':theme', Validate::sanitize($_REQUEST["theme"]), PDO::PARAM_STR);
                 $querySQL->bindValue(':publicationDate', date('Y-m-d'), PDO::PARAM_STR); // Fecha actual
                 $querySQL->bindValue(':idUser', $_SESSION["idUser"], PDO::PARAM_INT); // Usuario con sesión activa
                 $querySQL->bindValue(':numViews', 0, PDO::PARAM_INT); // Número de vistas al principio
@@ -109,12 +110,12 @@
                 ("UPDATE post SET content = :content, title = :title,
                 theme = :theme, publicationDate = :publicationDate, idUser = :idUser WHERE id = :idPost");
 
-                $querySQL->bindValue(':idPost', $_REQUEST["idPost"], PDO::PARAM_INT);
-                $querySQL->bindValue(':content', $_REQUEST["content"], PDO::PARAM_STR);
-                $querySQL->bindValue(':title', $_REQUEST["title"], PDO::PARAM_STR);
-                $querySQL->bindValue(':theme', $_REQUEST["theme"], PDO::PARAM_STR);
-                $querySQL->bindValue(':publicationDate', $_REQUEST["publicationDate"], PDO::PARAM_STR);
-                $querySQL->bindValue(':idUser', $_REQUEST["idUser"], PDO::PARAM_INT);
+                $querySQL->bindValue(':idPost', Validate::sanitize($_REQUEST["idPost"]), PDO::PARAM_INT);
+                $querySQL->bindValue(':content', Validate::sanitize($_REQUEST["content"]), PDO::PARAM_STR);
+                $querySQL->bindValue(':title', Validate::sanitize($_REQUEST["title"]), PDO::PARAM_STR);
+                $querySQL->bindValue(':theme', Validate::sanitize($_REQUEST["theme"]), PDO::PARAM_STR);
+                $querySQL->bindValue(':publicationDate', Validate::sanitize($_REQUEST["publicationDate"]), PDO::PARAM_STR);
+                $querySQL->bindValue(':idUser', Validate::sanitize($_REQUEST["idUser"]), PDO::PARAM_INT);
 
                 $querySQL->execute();
 
@@ -263,6 +264,48 @@
     
                 $querySQL->execute();
     
+            } catch(PDOException $error) {
+                $error = $error->getMessage();
+            }
+        }
+
+        /**
+            * Filtrado de los posts
+            *
+            * Esta función se conecta a la Base de Datos para filtrar
+            * el array de post y ordenarlo en función del tipo de 
+            * filtro que le estamos pasando
+            *
+            * @param por $_POST -> el tipo de filtro 
+            *
+            * @global $_REQUEST
+            *
+            * @return array $posts -> post ordenados dependiendo del filtro
+        */
+        public static function filterPost(){
+            try {
+                $connection = ConnectDB::connect();
+
+                $filter = require "./static/constant/filter.php";
+                $filter = $filter["filter"][$_REQUEST["filter"]];
+
+                $key = $filter["key"];
+                $order = $filter["order"];
+
+                if ($_REQUEST["filter"] === "topViews" || $_REQUEST["filter"] === "lessViews"){
+                    $querySQL = "SELECT * FROM post ORDER BY $key $order";
+
+                } else {
+                    $querySQL = "SELECT * FROM post ORDER BY (SELECT COUNT(*) FROM $key WHERE $key.idPost = post.id) $order";
+                }
+
+                $sentence = $connection->prepare($querySQL);
+                $sentence->execute();
+        
+                $posts = $sentence->fetchAll();
+
+                return $posts;
+
             } catch(PDOException $error) {
                 $error = $error->getMessage();
             }

@@ -167,5 +167,19 @@
             return $result;
         }
 
+        /**
+            * Sanitización de datos
+            *
+            * Esta función recibe un valor de un formulario y lo sanitiza para
+            * eliminar los espacios y el código HTML que se ha podido insertar
+            *
+            * @param @value -> valor de un formulario
+            *
+            * @return -> el valor sanitizado
+        */
+        public static function sanitize($value){
+            return trim(strip_tags($value));
+        }
+
     }
 ?>
