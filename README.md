@@ -55,7 +55,7 @@ El proyecto se trata de un foro, donde tanto usuarios como administradores podr�
 - Apache/2.4.46 
 - Bootstrap 5
 - Composer 2.5.1
-- 
+
 ## Instalación
 <a id="instalacion"></a>
 
@@ -115,6 +115,8 @@ Por otro lado, los administradores de la aplicación tendrán control total sobr
 ## Contacto
 <a id="contacto"></a>
 
-Sara del Pino Cabrera Sánchez - saracs15.scssn@gmail.com - [LinkedIn](https://www.linkedin.com/in/sarascs/)
+Sara del Pino Cabrera Sánchez - saracs15.scssn@gmail.com
 
 [Enlace a la web](https://)
+
+[![](https://i.imgur.com/ACtd5Gf.png)](https://www.linkedin.com/in/sarascs/)[![](https://i.imgur.com/POePGcm.png)](https://github.com/SaraCS21)
