@@ -119,4 +119,4 @@ Sara del Pino Cabrera Sánchez - saracs15.scssn@gmail.com
 
 [Enlace a la web](https://)
 
-[![](https://i.imgur.com/ACtd5Gf.png)](https://www.linkedin.com/in/sarascs/)[![](https://i.imgur.com/POePGcm.png)](https://github.com/SaraCS21)
+[![](https://i.imgur.com/F0jmP7u.png)](https://www.linkedin.com/in/sarascs/)[![](https://i.imgur.com/xICWHyo.png)](https://github.com/SaraCS21)
