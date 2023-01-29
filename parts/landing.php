@@ -38,7 +38,7 @@
                 <h2 class="pb-5 text-center fs-1">High5!</h2>
                 <div class="form">
                     <i class='bx bx-search'></i>
-                    <input type="text" class="form-control form-input" placeholder="Search anything...">
+                    <input type="text" class="form-control form-input" placeholder="Busca lo que quieras...">
                     <span class="left-pan"><i class='bx bx-microphone'></i></span>
                 </div>
             </div>

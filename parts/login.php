@@ -18,14 +18,16 @@
             // Validamos los datos...
             $validate = Validate::validate("login", $keysInsert);
 
+            // Datos validados
             if ($validate === ""){
-                // En caso de que algo falle...
+                // Si la persona no existe...
                 if (Person::comprobePerson() !== ""){  
     ?>
 
-<div class="w-50 alert alert-danger" role="alert"><?= Person::comprobePerson() ?></div>
+    <div class="w-50 alert alert-danger" role="alert"><?= Person::comprobePerson() ?></div>
 
     <?php
+                // Si la persona existe...
                 } else {
                     // Ponemos el "id" dentro de la sesión
                     $_SESSION["idUser"] = (Person::selectIdPerson()) ? Person::selectIdPerson()[0][0] : 0;
@@ -33,11 +35,12 @@
                     Header("Location: ./index.php?url=landing");
                 }
 
+            // Datos invalidados
             } else if ($validate !== "") {
                 $_SESSION["idUser"] = 0;
     ?>
 
-<div class="w-50 alert alert-danger" role="alert"><?= $validate ?></div>
+    <div class="w-50 alert alert-danger" role="alert"><?= $validate ?></div>
 
     <?php
             }

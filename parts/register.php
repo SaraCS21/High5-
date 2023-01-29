@@ -9,11 +9,6 @@
         <?php
             // En caso de darle al botón de registrarnos...
             if(isset($_REQUEST["register"])){
-                $result = [
-                    "error" => false,
-                    "mensaje" => "El usuario " . $_REQUEST["name"] . "ha sido agregado con éxito"
-                ];
-
                 // Las claves de nuestro formulario
                 $keysInsert = ["name", "surname", "age", "email", "password", "confirmPassword", "url"];
                 $validate = Validate::validate("register", $keysInsert);
