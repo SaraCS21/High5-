@@ -77,8 +77,8 @@
 
     // En caso de que queramos eliminar un comentario...
     } else if (isset($_REQUEST["deleteComent"])){
-        // Coment::deleteComent();
-        // Header("Location: ./index.php?url=post&idPost=$id");
+        Coment::deleteComent();
+        Header("Location: ./index.php?url=post&idPost=$id");
 
     // En caso de que queramos dar like a un post...
     } else if (isset($_REQUEST["like"])){
