@@ -6,7 +6,7 @@
 
     session_start(); // Iniciamos la sesión
     
-    require "../vendor/autoload.php";
+    // require "../vendor/autoload.php";
     use Controllers\Person;
 
     // En caso de que queramos movernos a la página principal...
