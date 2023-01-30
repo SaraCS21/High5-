@@ -4,8 +4,8 @@
     "type": "project",
     "autoload": {
         "psr-4": {
-            "Config\\" : "config/",
-            "Controllers\\" : "controllers/"
+            "Config\\" : "./config",
+            "Controllers\\" : "./controllers"
         }
     },
     "authors": [
