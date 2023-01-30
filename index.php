@@ -1,5 +1,4 @@
 <!-- Llamamos al autoload -->
-<!-- <?php require __DIR__ . "./vendor/autoload.php"; ?>  -->
 <?php require "/vendor/autoload.php"; ?> 
 
 <!-- Llamada al header de la web -->
