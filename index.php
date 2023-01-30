@@ -1,5 +1,5 @@
 <!-- Llamamos al autoload -->
-<?php require "/vendor/autoload.php"; ?> 
+<?php require "./vendor/autoload.php"; ?> 
 
 <!-- Llamada al header de la web -->
 <?php require "./parts/header.php" ?>
