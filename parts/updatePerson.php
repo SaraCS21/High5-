@@ -56,6 +56,8 @@
                 <label class="form-label" for="floatingEmail">Correo electrónico</label>
             </div>
 
+            <?php if ($values["type"] !== "admin"){ ?>
+
             <div class="mb-4">
                 <?php if ($values["type"] === "user") { ?>
 
@@ -91,6 +93,7 @@
 
                 <?php } ?>
             </div>
+            <?php } ?>
             
             <input type="hidden" name="password" value="<?= $values["password"] ?>">
             <input type="hidden" name="email" value="<?= $values["email"] ?>">
