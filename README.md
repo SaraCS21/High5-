@@ -8,8 +8,9 @@
   - [Tabla de contenidos](#tabla-de-contenidos)
   - [Tecnologías aplicadas](#tecnologías-aplicadas)
   - [Requerimientos](#requerimientos)
-  - [Instalación](#instalación)
+  - [Instalación local](#instalación-local)
   - [Uso](#uso)
+  - [Licencia](#licencia)
   - [Contacto](#contacto)
 
 <div style="display:flex;align-items:center;justify-content:space-between;width=100%;margin-bottom:2rem;">
@@ -45,7 +46,7 @@ El proyecto se trata de un foro, donde tanto usuarios como administradores podr�
     - ![](https://i.imgur.com/gRzGqDh.png)
 - Despliegue
 
-    - ![](https://i.imgur.com/PVb1u3s.png)
+    - ![](https://i.imgur.com/TuBhCmH.png)
 
 ## Requerimientos
 <a id="requerimientos"></a>
@@ -56,7 +57,7 @@ El proyecto se trata de un foro, donde tanto usuarios como administradores podr�
 - Bootstrap 5
 - Composer 2.5.1
 
-## Instalación
+## Instalación local
 <a id="instalacion"></a>
 
 Primeramente debemos clonar el repositorio para tenerlo de manera local:
@@ -102,7 +103,8 @@ $ docker run --rm -v "$(pwd):/data" "phpdoc/phpdoc:3" --title High5! --ignore "v
 
 La aplicación trata de un foro en el que diferentes personas podrán registrarse e iniciar sesión para, a continuación, acceder a una pantalla con todos los diferentes posts creados.
 
-![](https://i.imgur.com/Hmt46XR.png)
+![](https://i.imgur.com/UsshUBN.png)
+
 
 Los usuarios podrán realizar comentarios a los posts, darles like y, cuando son de su propiedad, editarlos y eliminarlos.
 
@@ -111,6 +113,11 @@ Los usuarios podrán realizar comentarios a los posts, darles like y, cuando son
 Por otro lado, los administradores de la aplicación tendrán control total sobre los posts y los usuarios, pudiendo modificar ciertos valores y eliminarlos. También podrán bloquear usuarios, prohibiéndole el acceso a la web.
 
 ![](https://i.imgur.com/OClp3u3.png)
+
+## Licencia
+<a id="licencia"></a>
+
+Distribuido bajo licencia MIT.
 
 ## Contacto
 <a id="contacto"></a>
