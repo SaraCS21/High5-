@@ -68,10 +68,18 @@ $ git clone https://github.com/SaraCS21/High5-.git
 Debemos tener en cuenta que nuestra aplicación hace uso de variables de entorno, así que para poder usar nuestra Base de Datos de manera local tendremos que crear un fichero <span style="color:#6f11eb">`.env`</span> en el directorio raíz, siguiendo la siguiente estructura:
 
 ```js=
-DB_HOST=host_que_queramos
-DB_USER=user_que_queramos
-DB_PASS=password_que_queramos
+DB_HOST=
+DB_USER=
+DB_PASS=
 DB_DB=Foro 
+
+ADMIN_NAME=
+ADMIN_SURNAME=
+ADMIN_EMAIL=
+ADMIN_PASS=
+ADMIN_AGE=
+ADMIN_TYPE=admin
+ADMIN_BLOCK=unblock
 ```
 
 Una vez lo tengamos listo, tendremos que instalar las dependencias para que nuestra aplicación pueda funcionar, para ello tendremos que ejecutar <span style="color:#6f11eb">`composer`</span>:
@@ -124,6 +132,7 @@ Distribuido bajo licencia MIT.
 
 Sara del Pino Cabrera Sánchez - saracs15.scssn@gmail.com
 
-[Enlace a la web](http://high5-dsw.herokuapp.com/) - [Enlace a la documentación](http://high5-dsw.herokuapp.com/docs/)
+[Enlace a la web](http://high5-dsw.herokuapp.com/)
+[Enlace a la documentación](http://high5-dsw.herokuapp.com/docs/)
 
 [![](https://i.imgur.com/F0jmP7u.png)](https://www.linkedin.com/in/sarascs/)[![](https://i.imgur.com/xICWHyo.png)](https://github.com/SaraCS21)
