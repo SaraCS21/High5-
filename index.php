@@ -9,7 +9,7 @@
     use Config\ConnectDB;
     use Config\SelectPage;
 
-    ConnectDB::install();
+    // ConnectDB::install();
 ?>
 
 <?php
