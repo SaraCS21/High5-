@@ -41,13 +41,13 @@
                     ("INSERT INTO person (name, surname, email, password, age, type, block) VALUES
                     (:name, :surname, :email, :password, :age, :type, :block)");
         
-                    $querySQL->bindValue(':name', "Admin", PDO::PARAM_STR);
-                    $querySQL->bindValue(':surname', "Admin", PDO::PARAM_STR);
-                    $querySQL->bindValue(':email', "admin@high5.com", PDO::PARAM_STR);
-                    $querySQL->bindValue(':password', Validate::hashPassword("Daw1234!"), PDO::PARAM_STR);
-                    $querySQL->bindValue(':age', 25, PDO::PARAM_INT);
-                    $querySQL->bindValue(':type', "admin", PDO::PARAM_STR);
-                    $querySQL->bindValue(':block', "unblock", PDO::PARAM_STR);
+                    $querySQL->bindValue(':name', $_ENV["ADMIN_NAME"], PDO::PARAM_STR);
+                    $querySQL->bindValue(':surname', $_ENV["ADMIN_SURNAME"], PDO::PARAM_STR);
+                    $querySQL->bindValue(':email', $_ENV["ADMIN_EMAIL"], PDO::PARAM_STR);
+                    $querySQL->bindValue(':password', Validate::hashPassword($_ENV["ADMIN_PASS"]), PDO::PARAM_STR);
+                    $querySQL->bindValue(':age', $_ENV["ADMIN_AGE"], PDO::PARAM_INT);
+                    $querySQL->bindValue(':type', $_ENV["ADMIN_TYPE"], PDO::PARAM_STR);
+                    $querySQL->bindValue(':block', $_ENV["ADMIN_BLOCK"], PDO::PARAM_STR);
         
                     $querySQL->execute();
                 }

@@ -167,6 +167,8 @@
                             <!-- Botones con las diferentes acciones que puede hacer el administrador -->
                             <td class="d-flex justify-content-center align-items-center">
 
+                                <?php if ($user["type"] !== "admin") { ?>
+
                                 <!-- Modal de eliminación -->
                                 <button class="border-0 bg-light" type="submit" name="delete" value="<?= $user["id"] ?>">
                                         
@@ -191,6 +193,8 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <?php } ?>
 
                                 <!-- Botón de edición -->
                                 <button type="submit" name="editUser" value="<?= $user["id"] ?>" class="btn btn-warning">
