@@ -6,7 +6,7 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql
 ENV DB_HOST=mysql
 ENV DB_USER=sara
 ENV DB_PASS=1234
-ENV DB_NAME=Foro
+ENV DB_DB=Foro
 ENV ADMIN_NAME=admin
 ENV ADMIN_SURNAME=admin
 ENV ADMIN_EMAIL=admin@admin.com
