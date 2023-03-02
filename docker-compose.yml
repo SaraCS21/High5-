@@ -1,0 +1,22 @@
+version: '3.6'
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    restart: always
+    volumes:
+      - ./dbdata:/var/lib/mysql:z
+      - ./sql:/docker-entrypoint-initdb.d:z
+
+  my-app:
+    image: high5-img
+    restart: always
+    ports:
+      - 8080:80
+    volumes:
+      - ./ob.ini:/usr/local/etc/php/conf.d/ob.ini
+    depends_on:
+      - mysql
